@@ -57,6 +57,7 @@ $lock='lock.lok';#lock folder
 	{'name','掘削機','order',5,'gettype',0,'max',9,'need',4,},
 	{'name','土砂袋','order',6,'gettype',0,'max',9,'need',7,},
 	{'name','芭蕉扇','order',3,'gettype',0,'max',9,},
+	{'name','双眼鏡','order',7,'gettype',0,'max',9,'val',1,},
 );
 
 #---------------------------------------------------------------
@@ -502,6 +503,26 @@ sub item{
 		$txt=&printpt($$map[$$pl{'posi'}]{'land'},$$pl{'posi'}).'へとランダムワープしました。';
 		$$log{'action'}[0].=$txt;
 		$return.=$txt.'<br>';
+	}elsif($item==7){
+		$return.='周辺の敵の人数と罠を確認します。<br>';
+		for($i=0-$items[7]{'val'};$i<=$items[7]{'val'};$i++){
+			next if $i*$width+$$pl{'posi'}<0 || $i*$width+$$pl{'posi'}>$height*$width;
+			for($j=0-$items[7]{'val'};$j<=$items[7]{'val'};$j++){
+				my($posi,$k,$txt);
+				next if $$pl{'posi'}%$width+$j<0 || $$pl{'posi'}%$width+$j>$width;
+				my $posi=$$pl{'posi'}+$i*$width+$j;
+				my $k=0;
+				foreach(@{$$map[$posi]{'member'}}){
+					if($k!=$$pl{'belong'} && $_){
+						$txt.=&printcn($k,$_.'人');
+						$$map[$posi]{'text'}.=&printcn($k,'<b style="color:red">'.$_.'</b>');
+					}
+					$k++;
+				}
+				$return.=&printpt($$map[$posi]{'belong'},$posi).$txt.'、' if $txt;
+			}
+		}
+		$return.='<br>';
 	}
 	$$log{'action'}[0].='<br>';
 	return $return;
