@@ -27,6 +27,8 @@ $maxcountrylog=500;# 国ログ
 $maxactionlog=500;# 行動ログ
 $maxhistorylog=999999;# 歴史ログ
 
+@deletecount=([14,0],[7,20],[3,1]);
+
 $title='ガンナー(コピー)';# タイトル
 $bgcolor='#EEFFEE';# 背景色
 $textcolor='black';# 文字色
@@ -151,6 +153,19 @@ sub main{
 
 	if($$pset{'end'} && $$pset{'resettime'}<time){
 		&reset($ppls,$pmap,$plog,$pset);
+	}
+
+	for($i=0;$i<@{$$ppls{'pls'}};$i++){
+		next if $i==$$ppls{'id'};
+		foreach(@deletecount){
+			if($$ppls{'pls'}[$i]{'lastlogin'}+$$_[0]*86400<time && (!$$_[1] || $$ppls{'pls'}[$i]{'status'}[4]<$$_[1])){
+				$txt=&printpl($$ppls{'pls'}[$i]).' [統一'.$$ppls{'pls'}[$i]{'status'}[0].'/褒賞'.$$ppls{'pls'}[$i]{'status'}[3].'/転生'.$$ppls{'pls'}[$i]{'status'}[4].'] は'.$$_[0].'日以上定期連絡が無いので除隊処分となりました';
+				unshift(@{$$plog{'action'}},&printtime(time).' '.$txt.'<br>');
+				splice(@{$$ppls{'pls'}},$i,1);
+				$i--;
+				last;
+			}
+		}
 	}
 
 	$$pl{'wait'}+=time-$$pl{'lastlogin'};
