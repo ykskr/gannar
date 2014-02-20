@@ -606,10 +606,12 @@ sub players{
 
 # í—ğ
 sub ranking{
-	my($ppls,$point);
-	$ppls=$_[0];$pl=$_[1];
-	$point=int(($$pl{'status'}[0]*100+$$pl{'status'}[1]*10-$$pl{'status'}[2]*5+$$pl{'status'}[3])/($$pl{'status'}[4]/2+4));
-	return '<span style="color:red">í—ğ‚ÌŒö®F@(“ˆê~‚P‚O‚O{”j‰ó~‚P‚O|–Å–S~‚T{–JÜ) € (‚S{“]¶€‚Q)@¦Ø‚èÌ‚Ä</span><BR>–³ü‹@‚©‚ç‚Ìî•ñ‚Å©•ª©g‚Ìí—ğ‚ğŠm”F‚µ‚½B<BR><BR>Œ»İ‚Ìí—ğ‚Í <B>'.$point.'</B> ‚Å‚·B‘SQ‰ÁÒ'.@{$$ppls{'pls'}}.'l’† <B class=B4>‰½ˆÊ‚©•s–¾</B>‚Æ‚È‚Á‚Ä‚¢‚Ü‚·B<br>'."\n";
+	my($ppls,$point,$ranktxt,$c,$i);
+	$ppls=$_[0];$pl=$_[1];$c=1;$i=0;
+	foreach(@{$$ppls{'pls'}}){$c++ if $$pl{'score'}<$$_{'score'};$i++ if $$pl{'score'}==$$_{'score'};}
+	$ranktxt=$c.'ˆÊ';
+	$ranktxt.='ƒ^ƒC(“¯‡ˆÊ'.$i.'l)' if $i>1;
+	return '<span style="color:red">í—ğ‚ÌŒö®F@(“ˆê~‚P‚O‚O{”j‰ó~‚P‚O|–Å–S~‚T{–JÜ) € (‚S{“]¶€‚Q)@¦Ø‚èÌ‚Ä</span><BR>–³ü‹@‚©‚ç‚Ìî•ñ‚Å©•ª©g‚Ìí—ğ‚ğŠm”F‚µ‚½B<BR><BR>Œ»İ‚Ìí—ğ‚Í <B>'.$$pl{'score'}.'</B> ‚Å‚·B‘SQ‰ÁÒ'.@{$$ppls{'pls'}}.'l’† <B class=B4>'.$ranktxt.'</B>‚Æ‚È‚Á‚Ä‚¢‚Ü‚·B<br>'."\n";
 }
 
 # İ’è
@@ -1030,6 +1032,7 @@ sub transpl{
 	$p=$_[0];
 	$$p{'ptmax'}=$$p{'mvmax'}>$pointmax?$pointmax:$$p{'mvmax'};
 	$$p{'logcond'}={'all',3,'country',10,'action',30,'history',3};
+	$$p{'score'}=int(($$p{'status'}[0]*100+$$p{'status'}[1]*10-$$p{'status'}[2]*5+$$p{'status'}[3])/($$p{'status'}[4]/2+4));
 	return $p;
 }
 
