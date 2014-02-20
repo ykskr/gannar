@@ -79,28 +79,29 @@ if($form{'mode'} eq 'admin'){
 	exit;
 }
 
+$ppls=&load('pls',$form{'gnm'});
+($pset,$pmap)=&load('map',$$ppls{'pls'});
+$plog=&load('log');
+
 if($form{'gnm'} ne ''){
-	my($pl,$lg);
 	if($form{'mode'} eq 'new'){
-		($pl,$lg)=&new();
+		$$ppls{'id'}=&new($ppls,$plog,$pset,$pmap);
 	}
 #	print &header();print &dump($p);exit;
-	&main($pl,$lg);
+	&main($ppls,$plog,$pset,$pmap);
 }elsif($form{'mode'} eq 'playerlist'){
-	&list();
+	&list($ppls,$plog,$pset,$pmap);
 }else{
-	&top();
+	&top($ppls,$plog,$pset,$pmap);
 }
 
 #---------------------------------------------------------------
 
 # TOP画面
 sub top{
-	my($pset,$pmap,$ppl,$plog);
-	$ppls=&load('pls');
-	($pset,$pmap)=&load('map');
-	$plog=&load('log');
-	if($$plog{'end'} && $$plog{'resettime'}<time){
+	my($pset,$pmap,$ppls,$plog);
+	($ppls,$plog,$pset,$pmap)=@_;
+	if($$pset{'end'} && $$pset{'resettime'}<time){
 		&reset($ppls,$pmap,$plog,$pset);
 		&save('pls',$ppls);
 		&save('map',$pset,$pmap);
@@ -139,18 +140,16 @@ sub top{
 
 # メイン画面
 sub main{
-	my($pset,$pmap,$ppl,$plog,$pl,$logcond,$message);
-	if($_[0]){$ppls=$_[0];$plog=$_[1];}
-	else{$ppls=&load('pls',$form{'gnm'});$plog=&load('log',$pl);}
+	my($pset,$pmap,$ppls,$plog,$pl,$logcond,$message);
+	($ppls,$plog,$pset,$pmap)=@_;
 	$pl=$$ppls{'pls'}[$$ppls{'id'}];
 	if($$pl{'name'} ne $form{'gnm'}){
 		&error('ログイン時エラー：その名前は存在しません('.$form{'gnm'}.')');
 	}elsif($$pl{'pass'} ne &pass($form{'gpw'})){
-		&error('ログイン時エラー：パスワードが違います('.&pass($form{'gpw'}).'!'.$form{'gpw'}.')');
+		&error('ログイン時エラー：パスワードが違います('.$form{'gpw'}.')');
 	}
-	($pset,$pmap)=&load('map',$$ppls{'pls'});
 
-	if($$plog{'end'} && $$plog{'resettime'}<time){
+	if($$pset{'end'} && $$pset{'resettime'}<time){
 		&reset($ppls,$pmap,$plog,$pset);
 	}
 
@@ -227,7 +226,7 @@ sub main{
 
 sub list{
 	my($i,$ppls,@cntry,@cnm);
-	$ppls=&load('pls');
+	$ppls=$_[0];
 	print &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,'css',<< "-CSS-"});
 #list{border:1px solid #778077;border-collapse:collapse;}
 #list td,#list th{border:1px solid #778077;padding:2px;}
@@ -363,7 +362,7 @@ sub ruin{
 	}
 	$i=0;foreach(@{$$setting{'country'}}){$i++ if $_;}$i-- if $$setting{'country'}[0];
 	if($i>1){
-		unshift(@{$$log{'action'}},&printtime(time).' '.sprintf('<span class=B%s>%s</span>から多数の人材が亡命していきました。<br>',$enemy,$cname[$enemy]));
+		unshift(@{$$log{'action'}},&printtime(time).' '.sprintf('<span class=B%s>%s</span>から多数の人材が亡命していきました。<br>',$enemy,$cname[$enemy])) if $enemy;
 		my(@tmp,@cnt,@exl);
 		foreach(@{$pls}){
 			if($$_{'belong'}==$enemy){
@@ -404,7 +403,7 @@ sub reign{
 	$time=time-$$setting{'begintime'};
 	if($time>3600){$txt.=sprintf('%d時間%02d分',int($time/3600),int(($time%3600)/60+0.5));}
 	else{$txt.=sprintf('%d分%02d秒間',int($time/60),$time%60);}
-	$txt.='の戦乱の末、<b>'.$$pl{'name'}.'</b>が終戦宣言を行い<b>'.$cname[$$pl{'belong'}].'</b>による第'.$setting{'period'}.'期全土統一が成し遂げられました</span><br>';
+	$txt.='の戦乱の末、<b>'.$$pl{'name'}.'</b>が終戦宣言を行い<b>'.$cname[$$pl{'belong'}].'</b>による第'.$$setting{'period'}.'期全土統一が成し遂げられました</span><br>';
 	$return.='統一しました。<br>';
 	foreach(@{$pls}){
 		if($$_{'origin'}==$$pl{'belong'}){
@@ -594,7 +593,7 @@ sub players{
 sub ranking{
 	my($ppls,$point);
 	$ppls=$_[0];$pl=$_[1];
-	$point=int(($$pl{'stats'}[0]*100+$$pl{'stats'}[1]*10-$$pl{'stats'}[2]*5+$$pl{'stats'}[3])/($$pl{'stats'}[4]/2+4));
+	$point=int(($$pl{'status'}[0]*100+$$pl{'status'}[1]*10-$$pl{'status'}[2]*5+$$pl{'status'}[3])/($$pl{'status'}[4]/2+4));
 	return '<span style="color:red">戦歴の公式：　(統一×１００＋破壊×１０－滅亡×５＋褒賞) ÷ (４＋転生÷２)　※切り捨て</span><BR>無線機からの情報で自分自身の戦歴を確認した。<BR><BR>現在の戦歴は <B>'.$point.'</B> です。全参加者'.@{$$ppls{'pls'}}.'人中 <B class=B4>何位か不明</B>となっています。<br>'."\n";
 }
 
@@ -795,16 +794,14 @@ $$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
 		my($txt);
 		$$txt{'all'}=[];
 		open(my $f,$mesafile);while(<$f>){chomp;push(@{$$txt{'all'}},$_);}close($f);
-		if($_[1]>=0){
-			open(my $f,$mescfile);
-			for(my $i=0;$i<@cname;$i++){
-				$_=<$f>;chomp;
-				$$txt{'housin'}[$i]=$_;
-			}
-			$$txt{'country'}=[];
-			while(<$f>){chomp;push(@{$$txt{'country'}},$_);}
-			close($f);
+		open(my $f,$mescfile);
+		for(my $i=0;$i<@cname;$i++){
+			$_=<$f>;chomp;
+			$$txt{'housin'}[$i]=$_;
 		}
+		$$txt{'country'}=[];
+		while(<$f>){chomp;push(@{$$txt{'country'}},$_);}
+		close($f);
 		$$txt{'action'}=[];
 		open(my $f,$actsfile);while(<$f>){chomp;push(@{$$txt{'action'}},$_);}close($f);
 		open(my $f,$histfile);while(<$f>){chomp;push(@{$$txt{'history'}},$_);}close($f);
@@ -882,17 +879,17 @@ sub save{
 
 # 新規登録
 sub new{
-	my($i,$c,$ppls,$plog,$dt,@cnum,%dt);
-	$ppls=&load('pls');
+	my($i,$c,$ppls,$pset,$pmap,$plog,$dt,@cnum,%dt);
+	($ppls,$plog,$pset,$pmap)=@_;
 	for($i=0;$i<@{$$ppls{'pls'}};$i++){
 		if($$ppls{'pls'}[$i]{'name'} eq $form{'gnm'}){
 			&error('新規登録エラー：「'.$form{'gnm'}.'」同じ名前で既に登録されています');
 		}
 		$cnum[$$ppls{'pls'}[$i]{'belong'}]++;
 	}
-	$c=1;
-	for($i=2;$i<@cname;$i++){
-		$c=$i if $cnum[$c]>$cnum[$i];
+	$c=0;
+	for($i=1;$i<@cname;$i++){
+		$c=$i if $$pset{'country'}[$i] && (!$c || $cnum[$c]>$cnum[$i]);
 	}
 	$dt{'name'}=$form{'gnm'};
 	$dt{'pass'}=&pass($form{'gpw'});
@@ -914,9 +911,8 @@ sub new{
 	$dt{'board'}='';
 	$$ppls{'id'}=@{$$ppls{'pls'}};
 	push(@{$$ppls{'pls'}},&transpl(\%dt));
-	$plog=&load('log');
 	unshift(@{$$plog{'action'}},&printtime(time).sprintf(' <span class=B%s><B>%s</B>が志願兵として<B>%s</B>に入国しました。</span><br>',$c,$dt{'name'},$cname[$c]));
-	return $ppls,$plog;
+	return $#{$ppls{'pls'}};
 }
 
 sub reset{
@@ -924,16 +920,18 @@ sub reset{
 	($ppls,$pmap,$plog,$pset)=@_;
 	open(F,$stockfile);$newmap=<F>;while(<F>){$stockmap.=$_;}close(F);
 	open(F,">$stockfile");print F $stockmap;close(F);
+	chomp($newmap);
 	if($newmap eq ''){$$pset{'begintime'}+=$beginwait;return;}
+	@{$$pset{'country'}}=();
 	$c=0;foreach(split(//,$newmap)){
-		$$pmap[$c]{'land'}=$_;
+		$$pmap[$c]=&getmap($_);
+		$$pset{'country'}[$$pmap[$c]{'belong'}]++ if $$pmap[$c]{'ownable'};
 		$c++;
 	}
-	@{$$pset{'country'}}=();
 	$shuffle='<table class=shuffle><colgroup>';
 	for($c=1;$c<@cname;$c++){$shuffle.="<col class=B$c>";}
 	$shuffle.='</colgroup><tr>';
-	for($c=1;$c<@cname;$c++){$shuffle.="<td>$cname[$c]</td>";}
+	for($c=1;$c<@cname;$c++){$shuffle.="<th>$cname[$c]</th>";}
 	@pls=@{$$ppls{'pls'}};
 	for($c=0;$c<@pls;$c++){my $i=rand(@pls-$c)+$c;@pls[$i,$c]=@pls[$c,$i] if $i!=$c;}
 	$c=0;foreach(@pls){
@@ -942,7 +940,7 @@ sub reset{
 		$$_{'posi'}=&defaultpt($$_{'belong'});
 		$$_{'actflag'}=0;
 		$$_{'status'}[4]++;
-		$$pset{'country'}[$$_{'belong'}]++;
+		$$pmap[$$_{'posi'}]{'member'}[$$_{'belong'}]++;
 		$shuffle.="</tr><tr>" if $$_{'belong'}==1;
 		$shuffle.="<td>$$_{'name'}</td>";
 		$c++;
