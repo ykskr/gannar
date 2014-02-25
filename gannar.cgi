@@ -1,5 +1,7 @@
 #!/usr/local/bin/perl
 
+#------ option start -------#
+
 $cgi='gannar.cgi';
 $adminpass='******';
 
@@ -45,6 +47,8 @@ $actsfile='actionlog.txt';#action
 $histfile='history.txt';#history
 $stockfile='stock.txt';#map stock for reset
 $lock='lock.lok';#lock folder
+
+#------ option end -------#
 
 #---------------------------------------------------------------
 
@@ -1091,8 +1095,25 @@ sub printtime{
 #---------------------------------------------------------------
 
 sub admin{
-	print "Content-type:text/plain\n\n";
-	if($form{'pass'} ne $adminpass){print 'end';exit;}
+	print &header();
+		print << "-HTML-";
+<form action="$cgi" method=POST>
+<input type=hidden name=mode value=admin>
+-HTML-
+	if($form{'pass'} eq ''){
+		print << "-HTML-";
+pass<input type=text name=pass><br>
+<input type=submit value='ログイン'>
+</form>
+-HTML-
+		print &footer();
+		exit;
+	}
+	if($form{'pass'} ne $adminpass){
+		print 'error</form>';
+		print &footer();
+		exit;
+	}
 	if($form{'cmd'} eq 'mapedit'){
 		my($set,$map,$log,$po,$pn,$posi);
 		($set,$map)=&load('map');
@@ -1103,6 +1124,7 @@ sub admin{
 		$$map[$posi]=$pn;
 		&save('map',$set,$map);
 		&save('log',$log);
+		print "マップ編集完了。\n";
 	}
 	if($form{'cmd'} eq 'reset'){
 		my($ppls,$log,$set,$map);
@@ -1113,8 +1135,33 @@ sub admin{
 		&save('pls',$ppls);
 		&save('map',$pset,$pmap);
 		&save('log',$plog);
+		print "リセット完了。\n";
 	}
-	print 'end';
+	if($form{'cmd'} eq 'mapcreate'){
+		if(length($form{'map'})==$width*$height){
+			open(F,">>$stockfile");print F $form{'map'}."\n";close(F);
+			print "マップ登録完了。\n";
+		}else{
+			print 'マップの規定字数ではありません。'.length($form{'map'})."!=".int($width*$height)."\n";
+		}
+	}
+	print << "-HTML-";
+<input type=hidden name=cmd>
+<input type=hidden name=pass value="$form{'pass'}">
+<hr>
+<h3>マップ登録</h3>
+<input type=text name=map size=99><br>
+<input type=submit value='送信' onclick='this.form.cmd.value="mapcreate"'>
+<hr>
+<h3>地形変更</h3>
+場所ID<input type=text name=posi size=4><br>
+地形ID<input type=text name=land size=2><br>
+<input type=submit value='送信' onclick='this.form.cmd.value="mapedit"'>
+<hr>
+<h3>強制リセット</h3>
+<input type=submit value='送信' onclick='this.form.cmd.value="reset"'>
+-HTML-
+	print &footer();
 }
 
 #---------------------------------------------------------------
