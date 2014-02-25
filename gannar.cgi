@@ -36,15 +36,14 @@ $textcolor='black';# ï∂éöêF
 $bbsurl='http://www7.atpages.jp/ssdi/gb/gb.cgi';
 $chaturl='http://www7.atpages.jp/ssdi/chat/chat.cgi';
 
-$passfile='******';#password
-$playfile='******';#players
-$mapsfile='******';#map
-$mesafile='******';#all message
-$mescfile='******';#country message
-$mesdfile='******';#housin message
-$actsfile='******';#action
-$histfile='******';#history
-$stockfile='******';#map stock for reset
+$playfile='player.txt';#players
+$mapsfile='map.txt';#map
+$mesafile='messeall.txt';#all message
+$mescfile='messecountry.txt';#country message
+$mesdfile='housin.txt';#housin message
+$actsfile='actionlog.txt';#action
+$histfile='history.txt';#history
+$stockfile='stock.txt';#map stock for reset
 $lock='lock.lok';#lock folder
 
 #---------------------------------------------------------------
