@@ -103,7 +103,7 @@ if($form{'gnm'} ne ''){
 sub top{
 	my($pset,$pmap,$ppls,$plog);
 	($ppls,$plog,$pset,$pmap)=@_;
-	if($$pset{'end'} && $$pset{'resettime'}<time){
+	if((!-e $mapsfile || $$pset{'end'}) && $$pset{'resettime'}<time){
 		&reset($ppls,$pmap,$plog,$pset);
 		&save('pls',$ppls);
 		&save('map',$pset,$pmap);
@@ -151,7 +151,7 @@ sub main{
 		&error('ログイン時エラー：パスワードが違います('.$form{'gpw'}.')');
 	}
 
-	if($$pset{'end'} && $$pset{'resettime'}<time){
+	if((!-e $mapsfile || $$pset{'end'}) && $$pset{'resettime'}<time){
 		&reset($ppls,$pmap,$plog,$pset);
 	}
 
