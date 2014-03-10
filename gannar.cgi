@@ -576,9 +576,8 @@ sub printfield{
 
 # マップ出力
 sub printmap{
-	my($i,$id,$return,%param);
+	my($i,$return,%param);
 	%param=%{$_[0]};
-	$id=shift(@_);
 	@map=@{$param{'map'}};
 	$return.="<table id=map>\n<tr class=outer><td>-</td>";
 	foreach($i=0;$i<$width;$i++){$return.="<td>$i</td>";}
