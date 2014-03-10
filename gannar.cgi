@@ -951,6 +951,7 @@ sub new{
 	$dt{'board'}='';
 	$$ppls{'id'}=@{$$ppls{'pls'}};
 	push(@{$$ppls{'pls'}},&transpl(\%dt));
+	$$pmap[$dt{'posi'}]{'member'}[$dt{'belong'}]++;
 	unshift(@{$$plog{'action'}},&printtime(time).sprintf(' <span class=B%s><B>%s</B>‚ªuŠè•º‚Æ‚µ‚Ä<B>%s</B>‚É“ü‘‚µ‚Ü‚µ‚½B</span><br>',$c,$dt{'name'},$cname[$c]));
 	return $#{$ppls{'pls'}};
 }
