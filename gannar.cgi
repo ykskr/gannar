@@ -961,7 +961,7 @@ sub reset{
 	open(F,$stockfile);$newmap=<F>;while(<F>){$stockmap.=$_;}close(F);
 	open(F,">$stockfile");print F $stockmap;close(F);
 	chomp($newmap);
-	if($newmap eq ''){$$pset{'begintime'}+=$beginwait;return;}
+	if($newmap eq ''){$$pset{'resettime'}+=$beginwait;$$pset{'begintime'}+=$beginwait;return;}
 	@{$$pset{'country'}}=();
 	$c=0;foreach(split(//,$newmap)){
 		$$pmap[$c]=&getmap($_);
