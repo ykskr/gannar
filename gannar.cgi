@@ -384,6 +384,7 @@ sub ruin{
 		unshift(@{$$log{'action'}},&printtime(time).' '.sprintf('<span class=B%s>%s</span>‚©‚ç‘½”‚ÌlŞ‚ª–S–½‚µ‚Ä‚¢‚«‚Ü‚µ‚½B<br>',$enemy,$cname[$enemy])) if $enemy;
 		my(@tmp,@cnt,@exl);
 		foreach(@{$pls}){
+			$cnt[$$_{'belong'}]++;
 			if($$_{'belong'}==$enemy){
 				push(@tmp,$_);
 				$$_{'status'}[2]++;
@@ -391,15 +392,14 @@ sub ruin{
 				$$_{'wamax'}+=$waitadd if $$_{'status'}[4]>=$waitthre;
 				$$_{'wamax'}=$waitmax if $$_{'wamax'}>$waitmax;
 				$$_{'move'}=$$_{'mvmax'};
-			}else{
-				$cnt[$$_{'belong'}]++;
+			}elsif($$_{'belong'}==$$pl{'belong'}){
 				$$_{'status'}[1]++ if $$_{'belong'}==$$pl{'belong'};
 				$$_{'point'}+=$ruinptpoint;
 			}
 		}
 		for($i=0;$i<@tmp;$i++){$j=int rand(@tmp-$i)+$i;@tmp[$i,$j]=@tmp[$j,$i] if $i!=$j;}
 		foreach(@tmp){
-			foreach($i=0,$j=1;$j<@cname;$j++){$i=$j if $cnt[$j] && (!$i || $cnt[$i]>$cnt[$j]);}
+			foreach($i=0,$j=1;$j<@cname;$j++){$i=$j if $cnt[$j] && $j!=$enemy && (!$i || $cnt[$i]>$cnt[$j]);}
 			$$_{'belong'}=$i;
 			$$_{'posi'}=&defaultpt($i);
 			$cnt[$i]++;
