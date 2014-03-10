@@ -484,16 +484,15 @@ sub item{
 		$$log{'action'}[0].=$txt;
 		$return.=$txt.'<br>';
 	}elsif($item==5){
-		if($$map[$$pl{'posi'}]{'land'}!=7){
-			$txt='現在地が'.&printmp(7,$lname[7]).'ではないため失敗しました。';
+		if($$map[$$pl{'posi'}]{'land'}!=8){
+			$txt='現在地が'.&printmp(8,$lname[8]).'ではないため失敗しました。';
 		}else{
 			$txt=$$map[$$pl{'posi'}]{'member'}[$$pl{'belong'}].'人で';
 			if($$map[$$pl{'posi'}]{'member'}[$$pl{'belong'}]<$items[$item]{'need'}){
 				$txt.='埋め立てを実行しましたが、人数が足りなかったため失敗しました。';
 			}else{
-				$$map[$$pl{'posi'}]{'land'}=$item==3?7:8;
-				$$map[$$pl{'posi'}]{'belong'}=0;
 				$txt.=&printmp($$map[$$pl{'posi'}]{'land'},$$map[$$pl{'posi'}]{'name'}).'の埋め立てに成功しました。';
+				$$map[$$pl{'posi'}]=&getmap($$pl{'belong'},'',$$map[$$pl{'posi'}]{'member'});
 			}
 		}
 		$$log{'action'}[0].=$txt;
