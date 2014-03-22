@@ -1056,7 +1056,10 @@ sub printtime{
 
 sub admin{
 	print "Content-type:text/plain\n\n";
-	if($form{'pass'} ne $adminpass){print 'end';exit;}
+	if($form{'pass'} ne $adminpass){
+            print 'end';
+            exit;
+        }
 	if($form{'cmd'} eq 'mapedit'){
 		my($set,$map,$log,$po,$pn,$posi);
 		($set,$map)=&load('map');
