@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 $cgi='index.cgi';
-$adminpass='******';
+my $config = {adminpass => '******'};
 
 @cname=('Gray','Red','Green','Blue','Yellow');
 @lname=('ŠD','Ô','—Î','Â','‰©','Ô','X','ò','‰Í','R');
@@ -1056,7 +1056,7 @@ sub printtime{
 
 sub admin{
 	print "Content-type:text/plain\n\n";
-	if($form{'pass'} ne $adminpass){
+	if($form{'pass'} ne $config->{adminpass}){
             print 'access forbidden';
             return;
         }
