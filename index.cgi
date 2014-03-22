@@ -78,20 +78,20 @@ run();
 exit;
 
 sub run {
-if($form{'mode'} eq 'admin'){
+    if($form{'mode'} eq 'admin'){
 	&admin();
-}elsif($form{'gnm'} ne ''){
+    }elsif($form{'gnm'} ne ''){
 	my($pl,$lg);
 	if($form{'mode'} eq 'new'){
-		($pl,$lg)=&new();
+            ($pl,$lg)=&new();
 	}
 #	print &header();print &dump($p);exit;
 	&main($pl,$lg);
-}elsif($form{'mode'} eq 'playerlist'){
+    }elsif($form{'mode'} eq 'playerlist'){
 	&list();
-}else{
+    }else{
 	&top();
-}
+    }
 }
 
 #---------------------------------------------------------------
