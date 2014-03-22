@@ -101,6 +101,7 @@ if($form{'gnm'} ne ''){
 	exit;
 }elsif($form{'mode'} eq 'playerlist'){
 	&list($ppls,$plog,$pset,$pmap);
+	exit;
 }else{
 	&top($ppls,$plog,$pset,$pmap);
 	exit;
