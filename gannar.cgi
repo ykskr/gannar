@@ -98,15 +98,14 @@ if($form{'gnm'} ne ''){
 	}
 #	print &header();print &dump($p);exit;
 	&main($ppls,$plog,$pset,$pmap);
-	exit;
 }elsif($form{'mode'} eq 'playerlist'){
 	&list($ppls,$plog,$pset,$pmap);
-	exit;
 }else{
 	&top($ppls,$plog,$pset,$pmap);
-	exit;
 }
 &unlock();
+
+exit;
 
 #---------------------------------------------------------------
 
