@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env perl
 
 $cgi='gannar.cgi';
 $adminpass='******';
