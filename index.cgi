@@ -100,9 +100,9 @@ sub app_run {
 # TOP画面
 sub action_index{
 	my($pset,$pmap,$ppl,$plog);
-	$ppls=&load('pls');
-	($pset,$pmap)=&load('map');
-	$plog=&load('log');
+	$ppls=&load_pls(undef);
+	($pset,$pmap)=&load_map(undef);
+	$plog=&load_log(undef);
 	if($$plog{'end'} && $$plog{'resettime'}<time){
 		&reset($ppls,$pmap,$plog,$pset);
 		&save_pls(undef,$ppls);
@@ -146,14 +146,14 @@ sub action_index{
 sub action_main{
 	my($pset,$pmap,$ppl,$plog,$pl,$logcond,$message);
 	if($_[0]){$ppls=$_[0];$plog=$_[1];}
-	else{$ppls=&load('pls',$form{'gnm'});$plog=&load('log',$pl);}
+	else{$ppls=&load_pls(undef,$form{'gnm'});$plog=&load_log(undef,$pl);}
 	$pl=$$ppls{'pls'}[$$ppls{'id'}];
 	if($$pl{'name'} ne $form{'gnm'}){
 		&error('ログイン時エラー：その名前は存在しません('.$form{'gnm'}.')');
 	}elsif($$pl{'pass'} ne &pass($form{'gpw'})){
 		&error('ログイン時エラー：パスワードが違います('.&pass($form{'gpw'}).'!'.$form{'gpw'}.')');
 	}
-	($pset,$pmap)=&load('map',$$ppls{'pls'});
+	($pset,$pmap)=&load_map(undef,$$ppls{'pls'});
 
 	if($$plog{'end'} && $$plog{'resettime'}<time){
 		&reset($ppls,$pmap,$plog,$pset);
@@ -231,7 +231,7 @@ sub action_main{
 
 sub action_playerlist{
 	my($i,$ppls,@cntry,@cnm);
-	$ppls=&load('pls');
+	$ppls=&load_pls(undef);
         
         my $ret = '';
 	$ret .= &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,'css',<< "-CSS-"});
@@ -742,8 +742,7 @@ sub printlink{
 #---------------------------------------------------------------
 
 # 各種読み込み
-sub load{
-	if($_[0] eq 'pls'){
+sub load_pls{
 		my($i,$plid,$now,$name,@pls,@dat);
 		open(my $f,$playfile);
 		$i=0;$plid=0;$now=0;
@@ -777,7 +776,8 @@ sub load{
 		}
 		close($f);
 		return {'id',$plid,'now',$now,'pls',\@pls,};
-	}elsif($_[0] eq 'map'){
+}
+sub load_map{
 		my($p,$ppl,$map,$trap,$i,$j,$pmap,@set,@balance);
 		$ppl=$_[1];
 		open(my $f,$mapsfile);
@@ -797,7 +797,8 @@ sub load{
 $$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
 		}
 		return {'period',$set[0],'resettime',$set[1],'begintime',$set[2],'end',$set[3],'country',\@balance},$pmap;
-	}elsif($_[0] eq 'log'){
+}
+sub load_log {
 		my($txt);
 		$$txt{'all'}=[];
 		open(my $f,$mesafile);while(<$f>){chomp;push(@{$$txt{'all'}},$_);}close($f);
@@ -816,7 +817,6 @@ $$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
 		open(my $f,$histfile);while(<$f>){chomp;push(@{$$txt{'history'}},$_);}close($f);
 		return $txt;
 	}
-}
 
 # 各種保存
 sub save_pls {
@@ -891,7 +891,7 @@ sub save_log{
 # 新規登録
 sub action_new{
 	my($i,$c,$ppls,$plog,$dt,@cnum,%dt);
-	$ppls=&load('pls');
+	$ppls=&load_pls(undef);
 	for($i=0;$i<@{$$ppls{'pls'}};$i++){
 		if($$ppls{'pls'}[$i]{'name'} eq $form{'gnm'}){
 			&error('新規登録エラー：「'.$form{'gnm'}.'」同じ名前で既に登録されています');
@@ -922,7 +922,7 @@ sub action_new{
 	$dt{'board'}='';
 	$$ppls{'id'}=@{$$ppls{'pls'}};
 	push(@{$$ppls{'pls'}},&transpl(\%dt));
-	$plog=&load('log');
+	$plog=&load_log(undef);
 	unshift(@{$$plog{'action'}},&printtime(time).sprintf(' <span class=B%s><B>%s</B>が志願兵として<B>%s</B>に入国しました。</span><br>',$c,$dt{'name'},$cname[$c]));
 	return $ppls,$plog;
 }
@@ -1070,8 +1070,8 @@ sub action_admin{
         }
 	if($form{'cmd'} eq 'mapedit'){
 		my($set,$map,$log,$po,$pn,$posi);
-		($set,$map)=&load('map');
-		($log)=&load('log');
+		($set,$map)=&load_map(undef);
+		($log)=&load_log(undef);
 		$pn=&getmap($form{'land'});
 		$posi=$form{'posi'};
 		unshift(@{$$log{'action'}},&printtime(time).' '.&printpt($$map[$posi]{'land'},$posi).sprintf("が<span class=B%s>%s</span>から<span class=B%s>%s</span>に変更されました。<br>",$$map[$posi]{'land'},$$map[$posi]{'name'},$$pn{'land'},$$pn{'name'}));
@@ -1080,9 +1080,9 @@ sub action_admin{
 		&save_log(undef,$log);
 	} elsif ($form{'cmd'} eq 'reset'){
 		my($ppls,$log,$set,$map);
-		$ppls=&load('pls');
-		($pset,$pmap)=&load('map',$$ppls{'pls'});
-		$plog=&load('log');
+		$ppls=&load_pls(undef);
+		($pset,$pmap)=&load_map(undef,$$ppls{'pls'});
+		$plog=&load_log(undef);
 		&reset($ppls,$pmap,$plog,$pset);
 		&save_pls(undef,$ppls);
 		&save_map(undef,$pset,$pmap);
