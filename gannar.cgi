@@ -1141,7 +1141,7 @@ sub error{
 
 <BODY BGCOLOR='$bgcolor'><DIV ALIGN='center'><H3>問題が発生しています。</H3>
 <div style='color:red'><B>Error:</B> <U>$_[0]</U></div><BR>
-<HR><A HREF='./gannar.cgi'>ガンナー 初期画面に戻る</A><BR>
+<HR><A HREF='./$cgi'>ガンナー 初期画面に戻る</A><BR>
 <FONT COLOR='#888888'>注意：ボタンの連打はキャラクターの消失につながります</FONT>
 </DIV></BODY></HTML>
 -HTML-
