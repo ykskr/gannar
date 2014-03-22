@@ -90,6 +90,7 @@ if($form{'gnm'} ne ''){
 	&list();
 }else{
 	&top();
+	exit;
 }
 
 #---------------------------------------------------------------
@@ -134,7 +135,6 @@ sub top{
 -HTML-
 	print &printlog($plog,{'logcond',{'all',3,'country',10,'action',30,'history',3}});
 	print &footer();
-	exit;
 }
 
 # ÉÅÉCÉìâÊñ 
