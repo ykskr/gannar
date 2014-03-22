@@ -34,8 +34,8 @@ $textcolor='black';# ï∂éöêF
 $bbsurl='http://www7.atpages.jp/ssdi/gb/gb.cgi';
 $chaturl='http://www7.atpages.jp/ssdi/chat/chat.cgi';
 
-$passfile='******';#password
-$playfile='******';#players
+$passfile='passfile.txt';#password
+$playfile='playfile.txt';#players
 $mapsfile='******';#map
 $mesafile='******';#all message
 $mescfile='******';#country message
