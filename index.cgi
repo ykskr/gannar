@@ -1079,7 +1079,10 @@ sub admin{
 		&save('pls',$ppls);
 		&save('map',$pset,$pmap);
 		&save('log',$plog);
-	}
+	} else {
+            print "no cmd given";
+            return;
+        }
 	print 'end';
 }
 
