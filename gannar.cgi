@@ -119,10 +119,11 @@ sub action_top{
 		&save('map',$pset,$pmap);
 		&save('log',$plog);
 	}
-	print &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,});
-	print &printfield($pset);
-	print &printmap({'map',$pmap});
-	print << "-HTML-";
+        my $ret = "";
+	$ret .= &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,});
+	$ret .= &printfield($pset);
+	$ret .= &printmap({'map',$pmap});
+	$ret .= << "-HTML-";
 <h2 class=oldmap><B>過去地形閲覧 等</B></h2>
 <FORM ACTION='$cgi' method='POST' NAME='gannar'>
 <SELECT NAME=val><OPTION VALUE=0>なし
@@ -130,23 +131,25 @@ sub action_top{
 <INPUT TYPE='submit' VALUE='過去の地形確認'>
 </FORM>
 -HTML-
-	print "<div class=firstlink>".&printlink()."</div>\n";
-	print << "-HTML-";
+	$ret .= "<div class=firstlink>".&printlink()."</div>\n";
+	$ret .= << "-HTML-";
 <FORM ACTION='$cgi' method='POST' NAME='gannar' class=login>
 <B>参加者名</B><INPUT TYPE='text' SIZE='18' NAME='gnm' VALUE='' MAXLENGTH='20'><BR>
 <B>パスワード</B><INPUT TYPE='password' SIZE='10' NAME='gpw' MAXLENGTH='16'>
 <input type=hidden name=mode value=login>
 <INPUT TYPE='submit' VALUE='ログイン'></FORM>
 -HTML-
-	print << "-HTML-";
+	$ret .= << "-HTML-";
 <FORM ACTION='$cgi' method='POST' NAME='gannar' class=login>
 <B>参加者名</B><INPUT TYPE='text' SIZE='18' NAME='gnm' VALUE='' MAXLENGTH='20'><BR>
 <B>パスワード</B><INPUT TYPE='password' SIZE='10' NAME='gpw' MAXLENGTH='16'>
 <input type=hidden name=mode value=new>
 <INPUT TYPE='submit' VALUE='新規登録'></FORM>
 -HTML-
-	print &printlog($plog,{'logcond',{'all',3,'country',10,'action',30,'history',3}});
-	print &footer();
+	$ret .= &printlog($plog,{'logcond',{'all',3,'country',10,'action',30,'history',3}});
+	$ret .= &footer();
+
+        print $ret;
 }
 
 # メイン画面
