@@ -1092,9 +1092,9 @@ sub header{
 	my($date,%param);
 	%param=%{$_[0]};
 	$date=&printtime(time);
-	$return.="Set-Cookie:gannar=;expires=Sun ,".sprintf("%02d",$gmt[3])."-".('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')[$gmt[4]]."-$gmt[5] 00:00:00 GMT\n";
-	$return.="Content-type:text/html;\n\n";
-	$return.=<< "-HEAD-";
+	$ret.="Set-Cookie:gannar=;expires=Sun ,".sprintf("%02d",$gmt[3])."-".('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')[$gmt[4]]."-$gmt[5] 00:00:00 GMT\n";
+	$ret.="Content-type:text/html;\n\n";
+	$ret.=<< "-HEAD-";
 <HTML lang='ja-JP'><HEAD><META NAME='ROBOTS' CONTENT='INDEX,FOLLOW'>
 <META HTTP-EQUIV='Content-type' CONTENT='text/html; charset=Shift_JIS'>
 <META NAME='description' CONTENT='非同期式多人数同時参加対戦型オンライン陣取りゲーム。他国同盟や全50種類のアイテムによる戦略的戦術的駆け引きを駆使し、全土統一せよ。'>
@@ -1124,7 +1124,7 @@ $param{'head'}
 <BODY BGCOLOR='$bgcolor'>
 <div class="title B$param{'cid'}"><B class=title>$title</B> 【$date】【参加人数：$param{'pltotal'}人】【ログイン中：約$param{'plnow'}人】</div>
 -HEAD-
-	return $return;
+	return $ret;
 }
 
 sub footer{
