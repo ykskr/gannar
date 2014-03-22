@@ -79,18 +79,18 @@ exit;
 
 sub run {
     if($form{'mode'} eq 'admin'){
-	&admin();
+	admin();
     }elsif($form{'gnm'} ne ''){
 	my($pl,$lg);
 	if($form{'mode'} eq 'new'){
-            ($pl,$lg)=&new();
+            ($pl,$lg)=new();
 	}
 #	print &header();print &dump($p);exit;
-	&main($pl,$lg);
+	main($pl,$lg);
     }elsif($form{'mode'} eq 'playerlist'){
-	&list();
+	list();
     }else{
-	&top();
+	top();
     }
 }
 
