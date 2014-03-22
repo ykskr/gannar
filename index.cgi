@@ -86,6 +86,7 @@ if($form{'gnm'} ne ''){
 	}
 #	print &header();print &dump($p);exit;
 	&main($pl,$lg);
+	exit;
 }elsif($form{'mode'} eq 'playerlist'){
 	&list();
 }else{
@@ -222,7 +223,6 @@ sub main{
 	&save('pls',$ppls);
 	&save('map',$pset,$pmap);
 	&save('log',$plog);
-	exit;
 }
 
 sub list{
