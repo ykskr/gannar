@@ -77,9 +77,7 @@ for(my $i=0;$i<@items;$i++){
 if($form{'mode'} eq 'admin'){
 	&admin();
 	exit;
-}
-
-if($form{'gnm'} ne ''){
+}elsif($form{'gnm'} ne ''){
 	my($pl,$lg);
 	if($form{'mode'} eq 'new'){
 		($pl,$lg)=&new();
