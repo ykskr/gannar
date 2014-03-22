@@ -101,7 +101,7 @@ if($form{'gnm'} ne ''){
 }elsif($form{'mode'} eq 'playerlist'){
 	&action_playerlist($ppls,$plog,$pset,$pmap);
 }else{
-	&action_top($ppls,$plog,$pset,$pmap);
+	print &action_top($ppls,$plog,$pset,$pmap);
 }
 &unlock();
 
@@ -149,7 +149,7 @@ sub action_top{
 	$ret .= &printlog($plog,{'logcond',{'all',3,'country',10,'action',30,'history',3}});
 	$ret .= &footer();
 
-	print $ret;
+	return $ret;
 }
 
 # ƒƒCƒ“‰æ–Ê
