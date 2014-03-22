@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-$cgi='gannar.cgi';
+$cgi='index.cgi';
 $adminpass='******';
 
 @cname=('Gray','Red','Green','Blue','Yellow');
