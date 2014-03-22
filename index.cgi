@@ -76,7 +76,6 @@ for(my $i=0;$i<@items;$i++){
 
 if($form{'mode'} eq 'admin'){
 	&admin();
-	exit;
 }elsif($form{'gnm'} ne ''){
 	my($pl,$lg);
 	if($form{'mode'} eq 'new'){
@@ -84,14 +83,13 @@ if($form{'mode'} eq 'admin'){
 	}
 #	print &header();print &dump($p);exit;
 	&main($pl,$lg);
-	exit;
 }elsif($form{'mode'} eq 'playerlist'){
 	&list();
-        exit;
 }else{
 	&top();
-	exit;
 }
+
+exit;
 
 #---------------------------------------------------------------
 
