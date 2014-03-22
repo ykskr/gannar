@@ -83,7 +83,7 @@ for(my $i=0;$i<@items;$i++){
 &lock();
 
 if($form{'mode'} eq 'admin'){
-	&admin();
+	&action_admin();
 	&unlock();
 	exit;
 }
@@ -94,14 +94,14 @@ $plog=&load('log');
 
 if($form{'gnm'} ne ''){
 	if($form{'mode'} eq 'new'){
-		&new($ppls,$plog,$pset,$pmap);
+		&action_new($ppls,$plog,$pset,$pmap);
 	}
 #	print &header();print &dump($p);exit;
-	&main($ppls,$plog,$pset,$pmap);
+	&action_main($ppls,$plog,$pset,$pmap);
 }elsif($form{'mode'} eq 'playerlist'){
-	&list($ppls,$plog,$pset,$pmap);
+	&action_list($ppls,$plog,$pset,$pmap);
 }else{
-	&top($ppls,$plog,$pset,$pmap);
+	&action_top($ppls,$plog,$pset,$pmap);
 }
 &unlock();
 
@@ -110,7 +110,7 @@ exit;
 #---------------------------------------------------------------
 
 # TOP‰æ–Ê
-sub top{
+sub action_top{
 	my($pset,$pmap,$ppls,$plog);
 	($ppls,$plog,$pset,$pmap)=@_;
 	if((!-e $mapsfile || $$pset{'end'}) && $$pset{'resettime'}<time){
@@ -150,7 +150,7 @@ sub top{
 }
 
 # ƒƒCƒ“‰æ–Ê
-sub main{
+sub action_main{
 	my($pset,$pmap,$ppls,$plog,$pl,$logcond,$message);
 	($ppls,$plog,$pset,$pmap)=@_;
 	$pl=$$ppls{'pls'}[$$ppls{'id'}];
@@ -247,7 +247,7 @@ sub main{
 	&save('log',$plog);
 }
 
-sub list{
+sub action_list{
 	my($i,$ppls,@cntry,@cnm);
 	$ppls=$_[0];
 	print &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,'css',<< "-CSS-"});
@@ -921,7 +921,7 @@ sub save{
 }
 
 # V‹K“o˜^
-sub new{
+sub action_new{
 	my($i,$c,$ppls,$pset,$pmap,$plog,$dt,@cnum,%dt);
 	($ppls,$plog,$pset,$pmap)=@_;
 	for($i=0;$i<@{$$ppls{'pls'}};$i++){
@@ -1096,7 +1096,7 @@ sub printtime{
 
 #---------------------------------------------------------------
 
-sub admin{
+sub action_admin{
 	my($count);
 	print &header();
 		print << "-HTML-";
