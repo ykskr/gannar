@@ -74,10 +74,10 @@ for(my $i=0;$i<@items;$i++){
 	$flagitem[$items[$i]{'fid'}]=$i if $items[$i]{'fid'};
 }
 
-run();
+app_run();
 exit;
 
-sub run {
+sub app_run {
     if($form{'mode'} eq 'admin'){
 	action_admin();
     }elsif($form{'gnm'} ne ''){
