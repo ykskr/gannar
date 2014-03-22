@@ -90,14 +90,14 @@ sub run {
     }elsif($form{'mode'} eq 'playerlist'){
 	action_list();
     }else{
-	print action_top();
+	print action_index();
     }
 }
 
 #---------------------------------------------------------------
 
 # TOP‰æ–Ê
-sub action_top{
+sub action_index{
 	my($pset,$pmap,$ppl,$plog);
 	$ppls=&load('pls');
 	($pset,$pmap)=&load('map');
