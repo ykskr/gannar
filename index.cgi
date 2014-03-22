@@ -1,5 +1,6 @@
 #!/usr/bin/env perl
 
+use autodie;
 $cgi='index.cgi';
 my $config = {adminpass => 'admin'};
 
