@@ -820,73 +820,73 @@ $$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
 
 # ŠeŽí•Û‘¶
 sub save_pls {
-		my($i,$plid,$now,@pls);
-		open(my $f,">$playfile");
-		foreach $dt(@{$_[1]{'pls'}}){
-			print $f join('<>',
-			$$dt{'name'},
-			$$dt{'pass'},
-			$$dt{'belong'},
-			$$dt{'origin'},
-			join("",@{$$dt{'item'}}),
-			$$dt{'posi'},
-			$$dt{'wait'},
-			$$dt{'wamax'},
-			$$dt{'move'},
-			$$dt{'mvmax'},
-			$$dt{'point'},
-			$$dt{'lastlogin'},
-			$$dt{'honor'},
-			join('!',@{$$dt{'status'}}),
-			join('!',@{$$dt{'itemflags'}}),
-			$$dt{'actflag'},
-			$$dt{'config'},
-			$$dt{'board'},
-			"\n");
-		}
-		close($f);
+    my($i,$plid,$now,@pls);
+    open(my $f,">$playfile");
+    foreach $dt(@{$_[1]{'pls'}}){
+        print $f join('<>',
+                      $$dt{'name'},
+                      $$dt{'pass'},
+                      $$dt{'belong'},
+                      $$dt{'origin'},
+                      join("",@{$$dt{'item'}}),
+                      $$dt{'posi'},
+                      $$dt{'wait'},
+                      $$dt{'wamax'},
+                      $$dt{'move'},
+                      $$dt{'mvmax'},
+                      $$dt{'point'},
+                      $$dt{'lastlogin'},
+                      $$dt{'honor'},
+                      join('!',@{$$dt{'status'}}),
+                      join('!',@{$$dt{'itemflags'}}),
+                      $$dt{'actflag'},
+                      $$dt{'config'},
+                      $$dt{'board'},
+                      "\n");
+    }
+    close($f);
 }
 
 sub save_map {
-		my($map,$trap,$i,$j,$pmap,@set,@balance);
-		for($i=0;$i<@{$_[2]};$i++){
-			$map.=$_[2][$i]{'land'};
-			$trap.=$_[2][$i]{'trap'};
-		}
-		open(my $f,">$mapsfile");
-		print $f join('!',$_[1]{'period'},$_[1]{'resettime'},$_[1]{'begintime'},$_[1]{'end'},"\n");
-		print $f $map."\n";
-		print $f $trap."\n";
-		close($f);
+    my($map,$trap,$i,$j,$pmap,@set,@balance);
+    for($i=0;$i<@{$_[2]};$i++){
+        $map.=$_[2][$i]{'land'};
+        $trap.=$_[2][$i]{'trap'};
+    }
+    open(my $f,">$mapsfile");
+    print $f join('!',$_[1]{'period'},$_[1]{'resettime'},$_[1]{'begintime'},$_[1]{'end'},"\n");
+    print $f $map."\n";
+    print $f $trap."\n";
+    close($f);
 }
 
 sub save_log{
-		my($text,$file,@tmp);
-		$text=$_[1];
-		open(my $f,">$mesafile");
-		for($i=0;$i<@{$$text{'all'}} && $maxalllog;$i++){
-			print $f $$text{'all'}[$i]."\n";
-		}
-		close($f);
-		open(my $f,">$mescfile");
-		for($i=0;$i<@cname;$i++){
-			print $f $$text{'housin'}[$i]."\n";
-		}
-		for($i=0;$i<@{$$text{'country'}} && $i<$maxcountrylog;$i++){
-			print $f $$text{'country'}[$i]."\n";
-		}
-		close($f);
-		open(my $f,">$actsfile");
-		for($i=0;$i<@{$$text{'action'}} && $i<$maxactionlog;$i++){
-			print $f $$text{'action'}[$i]."\n";
-		}
-		close($f);
-		open(my $f,">$histfile");
-		for($i=0;$i<@{$$text{'history'}} && $i<$maxhistorylog;$i++){
-			print $f $$text{'history'}[$i]."\n";
-		}
-		close($f);
-	}
+    my($text,$file,@tmp);
+    $text=$_[1];
+    open(my $f,">$mesafile");
+    for($i=0;$i<@{$$text{'all'}} && $maxalllog;$i++){
+        print $f $$text{'all'}[$i]."\n";
+    }
+    close($f);
+    open(my $f,">$mescfile");
+    for($i=0;$i<@cname;$i++){
+        print $f $$text{'housin'}[$i]."\n";
+    }
+    for($i=0;$i<@{$$text{'country'}} && $i<$maxcountrylog;$i++){
+        print $f $$text{'country'}[$i]."\n";
+    }
+    close($f);
+    open(my $f,">$actsfile");
+    for($i=0;$i<@{$$text{'action'}} && $i<$maxactionlog;$i++){
+        print $f $$text{'action'}[$i]."\n";
+    }
+    close($f);
+    open(my $f,">$histfile");
+    for($i=0;$i<@{$$text{'history'}} && $i<$maxhistorylog;$i++){
+        print $f $$text{'history'}[$i]."\n";
+    }
+    close($f);
+}
 
 # V‹K“o˜^
 sub action_new{
