@@ -102,6 +102,7 @@ if($form{'gnm'} ne ''){
 	&list($ppls,$plog,$pset,$pmap);
 }else{
 	&top($ppls,$plog,$pset,$pmap);
+	exit;
 }
 &unlock();
 
