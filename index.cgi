@@ -90,7 +90,7 @@ sub run {
     }elsif($form{'mode'} eq 'playerlist'){
 	action_list();
     }else{
-	action_top();
+	print action_top();
     }
 }
 
@@ -138,7 +138,7 @@ sub action_top{
 	$ret .= &printlog($plog,{'logcond',{'all',3,'country',10,'action',30,'history',3}});
 	$ret .= &footer();
 
-        print $ret;
+        return $ret;
 }
 
 # ƒƒCƒ“‰æ–Ê
