@@ -99,7 +99,7 @@ if($form{'gnm'} ne ''){
 #	print &header();print &dump($p);exit;
 	&action_main($ppls,$plog,$pset,$pmap);
 }elsif($form{'mode'} eq 'playerlist'){
-	&action_playerlist($ppls,$plog,$pset,$pmap);
+	print &action_playerlist($ppls,$plog,$pset,$pmap);
 }else{
 	print &action_top($ppls,$plog,$pset,$pmap);
 }
@@ -251,9 +251,10 @@ sub action_main{
 }
 
 sub action_playerlist{
-	my($i,$ppls,@cntry,@cnm);
+	my($i,$ppls,$ret,@cntry,@cnm);
 	$ppls=$_[0];
-	print &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,'css',<< "-CSS-"});
+	$ret='';
+	$ret.=&header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,'css',<< "-CSS-"});
 #list{border:1px solid #778077;border-collapse:collapse;}
 #list td,#list th{border:1px solid #778077;padding:2px;}
 .num{border-bottom:1px solid #778077;}
@@ -262,16 +263,16 @@ sub action_playerlist{
 		$cntry[$$_{'belong'}].=$$_{'name'}."<br>\n";
 		$cnm[$$_{'belong'}]++;
 	}
-	print "<table id=list cellspacing=0><tr>";
+	$ret .= "<table id=list cellspacing=0><tr>";
 	foreach($i=1;$i<@cname;$i++){
-		print "<th class=B$i>$cname[$i]</th>" if $cntry[$i];
+		$ret .= "<th class=B$i>$cname[$i]</th>" if $cntry[$i];
 	}
-	print "</tr><tr>\n";
+	$ret .= "</tr><tr>\n";
 	foreach($i=1;$i<@cname;$i++){
-		print "<td valign=top><div class=num>$cnm[$i]êl</div>\n$cntry[$i]\n</td>\n" if $cntry[$i];
+		$ret .= "<td valign=top><div class=num>$cnm[$i]êl</div>\n$cntry[$i]\n</td>\n" if $cntry[$i];
 	}
-	print "</tr></table>\n";
-	print &footer();
+	$ret .= "</tr></table>\n";
+	$ret .= &footer();
 }
 
 #---------------------------------------------------------------
