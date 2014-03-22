@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 $cgi='index.cgi';
-my $config = {adminpass => '******'};
+my $config = {adminpass => 'admin'};
 
 @cname=('Gray','Red','Green','Blue','Yellow');
 @lname=('ŠD','Ô','—Î','Â','‰©','Ô','X','ò','‰Í','R');
