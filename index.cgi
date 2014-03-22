@@ -89,6 +89,7 @@ if($form{'gnm'} ne ''){
 	exit;
 }elsif($form{'mode'} eq 'playerlist'){
 	&list();
+        exit;
 }else{
 	&top();
 	exit;
