@@ -743,80 +743,80 @@ sub printlink{
 
 # äeéÌì«Ç›çûÇ›
 sub load_pls{
-		my($i,$plid,$now,$name,@pls,@dat);
-		open(my $f,$playfile);
-		$i=0;$plid=0;$now=0;
-		$name=$_[1];
-		while(<$f>){
-			chomp;
-			@dat=split(/<>/);
-			my %dt=();
-			$dt{'name'}=$dat[0];
-			$dt{'pass'}=$dat[1];
-			$dt{'belong'}=$dat[2];
-			$dt{'origin'}=$dat[3];
-			$dt{'item'}=[split(//,$dat[4])];
-			$dt{'posi'}=$dat[5];
-			$dt{'wait'}=$dat[6];
-			$dt{'wamax'}=$dat[7];
-			$dt{'move'}=$dat[8];
-			$dt{'mvmax'}=$dat[9];
-			$dt{'point'}=$dat[10];
-			$dt{'lastlogin'}=$dat[11];
-			$dt{'honor'}=$dat[12];
-			$dt{'status'}=[split(/!/,$dat[13])];
-			$dt{'itemflags'}=[split(/!/,$dat[14])];
-			$dt{'actflag'}=$dat[15];
-			$dt{'config'}=$dat[16];
-			$dt{'board'}=$dat[17];
-			push(@pls,&transpl(\%dt));
-			if($name ne '' && $name eq $dt{'name'}){$plid=$i;}
-			$now++ if $dt{'lastlogin'}+$logintime>time;
-			$i++;
-		}
-		close($f);
-		return {'id',$plid,'now',$now,'pls',\@pls,};
+    my($i,$plid,$now,$name,@pls,@dat);
+    open(my $f,$playfile);
+    $i=0;$plid=0;$now=0;
+    $name=$_[1];
+    while(<$f>){
+        chomp;
+        @dat=split(/<>/);
+        my %dt=();
+        $dt{'name'}=$dat[0];
+        $dt{'pass'}=$dat[1];
+        $dt{'belong'}=$dat[2];
+        $dt{'origin'}=$dat[3];
+        $dt{'item'}=[split(//,$dat[4])];
+        $dt{'posi'}=$dat[5];
+        $dt{'wait'}=$dat[6];
+        $dt{'wamax'}=$dat[7];
+        $dt{'move'}=$dat[8];
+        $dt{'mvmax'}=$dat[9];
+        $dt{'point'}=$dat[10];
+        $dt{'lastlogin'}=$dat[11];
+        $dt{'honor'}=$dat[12];
+        $dt{'status'}=[split(/!/,$dat[13])];
+        $dt{'itemflags'}=[split(/!/,$dat[14])];
+        $dt{'actflag'}=$dat[15];
+        $dt{'config'}=$dat[16];
+        $dt{'board'}=$dat[17];
+        push(@pls,&transpl(\%dt));
+        if($name ne '' && $name eq $dt{'name'}){$plid=$i;}
+        $now++ if $dt{'lastlogin'}+$logintime>time;
+        $i++;
+    }
+    close($f);
+    return {'id',$plid,'now',$now,'pls',\@pls,};
 }
 sub load_map{
-		my($p,$ppl,$map,$trap,$i,$j,$pmap,@set,@balance);
-		$ppl=$_[1];
-		open(my $f,$mapsfile);
-		@set=split(/!/,<$f>);pop(@set);
-		$map=<$f>;
-		$trap=<$f>;
-		close($f);
-		for($i=0;$i<$height;$i++){
-			for($j=0;$j<$width;$j++){
-				$land=substr($map,$i*$width+$j,1);
-				$p=&getmap($land,length($trap)>$i*$width+$j?substr($trap,$i*$width+$j,1):'');
-				$$pmap[$i*$width+$j]=$p;
-				$balance[$$p{'belong'}]++ if $$p{'ownable'};
-			}
-		}
-		for($i=0;$i<@$ppl;$i++){
-$$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
-		}
-		return {'period',$set[0],'resettime',$set[1],'begintime',$set[2],'end',$set[3],'country',\@balance},$pmap;
+    my($p,$ppl,$map,$trap,$i,$j,$pmap,@set,@balance);
+    $ppl=$_[1];
+    open(my $f,$mapsfile);
+    @set=split(/!/,<$f>);pop(@set);
+    $map=<$f>;
+    $trap=<$f>;
+    close($f);
+    for($i=0;$i<$height;$i++){
+        for($j=0;$j<$width;$j++){
+            $land=substr($map,$i*$width+$j,1);
+            $p=&getmap($land,length($trap)>$i*$width+$j?substr($trap,$i*$width+$j,1):'');
+            $$pmap[$i*$width+$j]=$p;
+            $balance[$$p{'belong'}]++ if $$p{'ownable'};
+        }
+    }
+    for($i=0;$i<@$ppl;$i++){
+        $$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
+    }
+    return {'period',$set[0],'resettime',$set[1],'begintime',$set[2],'end',$set[3],'country',\@balance},$pmap;
 }
 sub load_log {
-		my($txt);
-		$$txt{'all'}=[];
-		open(my $f,$mesafile);while(<$f>){chomp;push(@{$$txt{'all'}},$_);}close($f);
-		if($_[1]>=0){
-			open(my $f,$mescfile);
-			for(my $i=0;$i<@cname;$i++){
-				$_=<$f>;chomp;
-				$$txt{'housin'}[$i]=$_;
-			}
-			$$txt{'country'}=[];
-			while(<$f>){chomp;push(@{$$txt{'country'}},$_);}
-			close($f);
-		}
-		$$txt{'action'}=[];
-		open(my $f,$actsfile);while(<$f>){chomp;push(@{$$txt{'action'}},$_);}close($f);
-		open(my $f,$histfile);while(<$f>){chomp;push(@{$$txt{'history'}},$_);}close($f);
-		return $txt;
-	}
+    my($txt);
+    $$txt{'all'}=[];
+    open(my $f,$mesafile);while(<$f>){chomp;push(@{$$txt{'all'}},$_);}close($f);
+    if($_[1]>=0){
+        open(my $f,$mescfile);
+        for(my $i=0;$i<@cname;$i++){
+            $_=<$f>;chomp;
+            $$txt{'housin'}[$i]=$_;
+        }
+        $$txt{'country'}=[];
+        while(<$f>){chomp;push(@{$$txt{'country'}},$_);}
+        close($f);
+    }
+    $$txt{'action'}=[];
+    open(my $f,$actsfile);while(<$f>){chomp;push(@{$$txt{'action'}},$_);}close($f);
+    open(my $f,$histfile);while(<$f>){chomp;push(@{$$txt{'history'}},$_);}close($f);
+    return $txt;
+}
 
 # äeéÌï€ë∂
 sub save_pls {
