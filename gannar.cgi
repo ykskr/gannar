@@ -88,9 +88,9 @@ if($form{'mode'} eq 'admin'){
 	exit;
 }
 
-$ppls=&load('pls',$form{'gnm'});
-($pset,$pmap)=&load('map',$$ppls{'pls'});
-$plog=&load('log');
+$ppls=&load_pls(undef,$form{'gnm'});
+($pset,$pmap)=&load_map(undef,$$ppls{'pls'});
+$plog=&load_log(undef);
 
 if($form{'gnm'} ne ''){
 	if($form{'mode'} eq 'new'){
@@ -781,8 +781,7 @@ sub printlink{
 #---------------------------------------------------------------
 
 # 各種読み込み
-sub load{
-	if($_[0] eq 'pls'){
+sub load_pls{
 		my($i,$plid,$now,$name,@pls,@dat);
 		open(my $f,$playfile);
 		$i=0;$plid=0;$now=0;
@@ -816,7 +815,8 @@ sub load{
 		}
 		close($f);
 		return {'id',$plid,'now',$now,'pls',\@pls,};
-	}elsif($_[0] eq 'map'){
+}
+sub load_map{
 		my($p,$ppl,$map,$trap,$i,$j,$pmap,@set,@balance);
 		$ppl=$_[1];
 		open(my $f,$mapsfile);
@@ -836,7 +836,8 @@ sub load{
 $$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
 		}
 		return {'period',$set[0],'resettime',$set[1],'begintime',$set[2],'end',$set[3],'country',\@balance},$pmap;
-	}elsif($_[0] eq 'log'){
+}
+sub load_log {
 		my($txt);
 		$$txt{'all'}=[];
 		open(my $f,$mesafile);while(<$f>){chomp;push(@{$$txt{'all'}},$_);}close($f);
@@ -852,7 +853,6 @@ $$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
 		open(my $f,$actsfile);while(<$f>){chomp;push(@{$$txt{'action'}},$_);}close($f);
 		open(my $f,$histfile);while(<$f>){chomp;push(@{$$txt{'history'}},$_);}close($f);
 		return $txt;
-	}
 }
 
 # 各種保存
@@ -1124,8 +1124,8 @@ pass<input type=text name=pass><br>
 	}
 	if($form{'cmd'} eq 'mapedit'){
 		my($set,$map,$log,$po,$pn,$posi);
-		($set,$map)=&load('map');
-		($log)=&load('log');
+		($set,$map)=&load_map(undef);
+		($log)=&load_log(undef);
 		$pn=&getmap($form{'land'});
 		$posi=$form{'posi'};
 		unshift(@{$$log{'action'}},&printtime(time).' '.&printpt($$map[$posi]{'land'},$posi).sprintf("が<span class=B%s>%s</span>から<span class=B%s>%s</span>に変更されました。<br>",$$map[$posi]{'land'},$$map[$posi]{'name'},$$pn{'land'},$$pn{'name'}));
@@ -1135,9 +1135,9 @@ pass<input type=text name=pass><br>
 		print "マップ編集完了。\n";
 	} elsif ($form{'cmd'} eq 'reset'){
 		my($ppls,$log,$set,$map);
-		$ppls=&load('pls');
-		($pset,$pmap)=&load('map',$$ppls{'pls'});
-		$plog=&load('log');
+		$ppls=&load_pls(undef);
+		($pset,$pmap)=&load_map(undef,$$ppls{'pls'});
+		$plog=&load_log(undef);
 		&reset($ppls,$pmap,$plog,$pset);
 		$$pset{'begintime'}=time+$beginwait;
 		&save_pls(undef,$ppls);
