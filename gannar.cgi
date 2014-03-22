@@ -1126,8 +1126,7 @@ pass<input type=text name=pass><br>
 		&save('map',$set,$map);
 		&save('log',$log);
 		print "マップ編集完了。\n";
-	}
-	if($form{'cmd'} eq 'reset'){
+	} elsif ($form{'cmd'} eq 'reset'){
 		my($ppls,$log,$set,$map);
 		$ppls=&load('pls');
 		($pset,$pmap)=&load('map',$$ppls{'pls'});
