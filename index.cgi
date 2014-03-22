@@ -88,7 +88,7 @@ sub run {
 #	print &header();print &dump($p);exit;
 	action_main($pl,$lg);
     }elsif($form{'mode'} eq 'playerlist'){
-	action_list();
+	action_playerlist();
     }else{
 	print action_index();
     }
@@ -228,7 +228,7 @@ sub action_main{
 	&save('log',$plog);
 }
 
-sub action_list{
+sub action_playerlist{
 	my($i,$ppls,@cntry,@cnm);
 	$ppls=&load('pls');
 	print &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,'css',<< "-CSS-"});
