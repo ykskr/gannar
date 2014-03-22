@@ -99,7 +99,7 @@ if($form{'gnm'} ne ''){
 #	print &header();print &dump($p);exit;
 	&action_main($ppls,$plog,$pset,$pmap);
 }elsif($form{'mode'} eq 'playerlist'){
-	&action_list($ppls,$plog,$pset,$pmap);
+	&action_playerlist($ppls,$plog,$pset,$pmap);
 }else{
 	&action_top($ppls,$plog,$pset,$pmap);
 }
@@ -250,7 +250,7 @@ sub action_main{
 	&save('log',$plog);
 }
 
-sub action_list{
+sub action_playerlist{
 	my($i,$ppls,@cntry,@cnm);
 	$ppls=$_[0];
 	print &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,'css',<< "-CSS-"});
