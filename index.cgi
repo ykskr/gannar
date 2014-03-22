@@ -79,25 +79,25 @@ exit;
 
 sub run {
     if($form{'mode'} eq 'admin'){
-	admin();
+	action_admin();
     }elsif($form{'gnm'} ne ''){
 	my($pl,$lg);
 	if($form{'mode'} eq 'new'){
-            ($pl,$lg)=new();
+            ($pl,$lg)=action_new();
 	}
 #	print &header();print &dump($p);exit;
-	main($pl,$lg);
+	action_main($pl,$lg);
     }elsif($form{'mode'} eq 'playerlist'){
-	list();
+	action_list();
     }else{
-	top();
+	action_top();
     }
 }
 
 #---------------------------------------------------------------
 
 # TOPâÊñ 
-sub top{
+sub action_top{
 	my($pset,$pmap,$ppl,$plog);
 	$ppls=&load('pls');
 	($pset,$pmap)=&load('map');
@@ -139,7 +139,7 @@ sub top{
 }
 
 # ÉÅÉCÉìâÊñ 
-sub main{
+sub action_main{
 	my($pset,$pmap,$ppl,$plog,$pl,$logcond,$message);
 	if($_[0]){$ppls=$_[0];$plog=$_[1];}
 	else{$ppls=&load('pls',$form{'gnm'});$plog=&load('log',$pl);}
@@ -225,7 +225,7 @@ sub main{
 	&save('log',$plog);
 }
 
-sub list{
+sub action_list{
 	my($i,$ppls,@cntry,@cnm);
 	$ppls=&load('pls');
 	print &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,'css',<< "-CSS-"});
@@ -881,7 +881,7 @@ sub save{
 }
 
 # êVãKìoò^
-sub new{
+sub action_new{
 	my($i,$c,$ppls,$plog,$dt,@cnum,%dt);
 	$ppls=&load('pls');
 	for($i=0;$i<@{$$ppls{'pls'}};$i++){
@@ -1054,7 +1054,7 @@ sub printtime{
 
 #---------------------------------------------------------------
 
-sub admin{
+sub action_admin{
 	print "Content-type:text/plain\n\n";
 	if($form{'pass'} ne $config->{adminpass}){
             print 'access forbidden';
