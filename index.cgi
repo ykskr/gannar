@@ -74,6 +74,9 @@ for(my $i=0;$i<@items;$i++){
 	$flagitem[$items[$i]{'fid'}]=$i if $items[$i]{'fid'};
 }
 
+run();
+exit;
+
 sub run {
 if($form{'mode'} eq 'admin'){
 	&admin();
@@ -90,8 +93,6 @@ if($form{'mode'} eq 'admin'){
 	&top();
 }
 }
-run();
-exit;
 
 #---------------------------------------------------------------
 
