@@ -1070,8 +1070,7 @@ sub admin{
 		$$map[$posi]=$pn;
 		&save('map',$set,$map);
 		&save('log',$log);
-	}
-	if($form{'cmd'} eq 'reset'){
+	} elsif ($form{'cmd'} eq 'reset'){
 		my($ppls,$log,$set,$map);
 		$ppls=&load('pls');
 		($pset,$pmap)=&load('map',$$ppls{'pls'});
