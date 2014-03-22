@@ -105,9 +105,9 @@ sub action_index{
 	$plog=&load('log');
 	if($$plog{'end'} && $$plog{'resettime'}<time){
 		&reset($ppls,$pmap,$plog,$pset);
-		&save('pls',$ppls);
-		&save('map',$pset,$pmap);
-		&save('log',$plog);
+		&save_pls(undef,$ppls);
+		&save_map(undef,$pset,$pmap);
+		&save_log(undef,$plog);
 	}
         my $ret = "";
 	$ret .= &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,});
@@ -224,9 +224,9 @@ sub action_main{
 	print &printlog($plog,$pl);
 	print "<hr>\n<div class=footlink>".&printlink()."</div>\n";
 	print &footer();
-	&save('pls',$ppls);
-	&save('map',$pset,$pmap);
-	&save('log',$plog);
+	&save_pls(undef,$ppls);
+	&save_map(undef,$pset,$pmap);
+	&save_log(undef,$plog);
 }
 
 sub action_playerlist{
@@ -819,8 +819,7 @@ $$pmap[$$ppl[$i]{'posi'}]{'member'}[$$ppl[$i]{'belong'}]++;
 }
 
 # äeéÌï€ë∂
-sub save{
-	if($_[0] eq 'pls'){
+sub save_pls {
 		my($i,$plid,$now,@pls);
 		open(my $f,">$playfile");
 		foreach $dt(@{$_[1]{'pls'}}){
@@ -846,7 +845,9 @@ sub save{
 			"\n");
 		}
 		close($f);
-	}elsif($_[0] eq 'map'){
+}
+
+sub save_map {
 		my($map,$trap,$i,$j,$pmap,@set,@balance);
 		for($i=0;$i<@{$_[2]};$i++){
 			$map.=$_[2][$i]{'land'};
@@ -857,7 +858,9 @@ sub save{
 		print $f $map."\n";
 		print $f $trap."\n";
 		close($f);
-	}elsif($_[0] eq 'log'){
+}
+
+sub save_log{
 		my($text,$file,@tmp);
 		$text=$_[1];
 		open(my $f,">$mesafile");
@@ -884,7 +887,6 @@ sub save{
 		}
 		close($f);
 	}
-}
 
 # êVãKìoò^
 sub action_new{
@@ -1074,17 +1076,17 @@ sub action_admin{
 		$posi=$form{'posi'};
 		unshift(@{$$log{'action'}},&printtime(time).' '.&printpt($$map[$posi]{'land'},$posi).sprintf("Ç™<span class=B%s>%s</span>Ç©ÇÁ<span class=B%s>%s</span>Ç…ïœçXÇ≥ÇÍÇ‹ÇµÇΩÅB<br>",$$map[$posi]{'land'},$$map[$posi]{'name'},$$pn{'land'},$$pn{'name'}));
 		$$map[$posi]=$pn;
-		&save('map',$set,$map);
-		&save('log',$log);
+		&save_map(undef,$set,$map);
+		&save_log(undef,$log);
 	} elsif ($form{'cmd'} eq 'reset'){
 		my($ppls,$log,$set,$map);
 		$ppls=&load('pls');
 		($pset,$pmap)=&load('map',$$ppls{'pls'});
 		$plog=&load('log');
 		&reset($ppls,$pmap,$plog,$pset);
-		&save('pls',$ppls);
-		&save('map',$pset,$pmap);
-		&save('log',$plog);
+		&save_pls(undef,$ppls);
+		&save_map(undef,$pset,$pmap);
+		&save_log(undef,$plog);
 	} else {
             print "no cmd given";
             return;
