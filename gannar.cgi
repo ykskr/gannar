@@ -80,8 +80,11 @@ for(my $i=0;$i<@items;$i++){
 	$flagitem[$items[$i]{'fid'}]=$i if $items[$i]{'fid'};
 }
 
+&lock();
+
 if($form{'mode'} eq 'admin'){
 	&admin();
+	&unlock();
 	exit;
 }
 
@@ -100,6 +103,7 @@ if($form{'gnm'} ne ''){
 }else{
 	&top($ppls,$plog,$pset,$pmap);
 }
+&unlock();
 
 #---------------------------------------------------------------
 
@@ -1228,6 +1232,7 @@ sub error{
 </DIV></BODY></HTML>
 -HTML-
 	print "<hr>".&dump(\%form);
+	&unlock();
 	exit 1;
 }
 
