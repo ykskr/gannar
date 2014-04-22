@@ -145,7 +145,6 @@ sub top{
 -HTML-
 	print &printlog($plog,{'logcond',{'all',3,'country',10,'action',30,'history',3}});
 	print &footer();
-	exit;
 }
 
 # ƒƒCƒ“‰æ–Ê
@@ -244,7 +243,6 @@ sub main{
 	&save('pls',$ppls);
 	&save('map',$pset,$pmap);
 	&save('log',$plog);
-	exit;
 }
 
 sub list{
