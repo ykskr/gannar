@@ -938,7 +938,7 @@ sub new{
 	$dt{'pass'}=&pass($form{'gpw'});
 	$dt{'belong'}=$c;
 	$dt{'origin'}=$c;
-	$dt{'item'}='';
+	$dt{'item'}=[];
 	$dt{'posi'}=&defaultpt($c);
 	$dt{'wait'}=0;
 	$dt{'wamax'}=$firstwait;
@@ -948,7 +948,7 @@ sub new{
 	$dt{'lastlogin'}=time;
 	$dt{'honor'}=0;
 	$dt{'status'}=[0,0,0,0,0];
-	$dt{'itemflags'}='';
+	$dt{'itemflags'}=[];
 	$dt{'actflag'}=0;
 	$dt{'config'}='';
 	$dt{'board'}='';
