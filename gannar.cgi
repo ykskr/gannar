@@ -1132,6 +1132,7 @@ pass<input type=text name=pass><br>
 		($pset,$pmap)=&load('map',$$ppls{'pls'});
 		$plog=&load('log');
 		&reset($ppls,$pmap,$plog,$pset);
+		$$pset{'begintime'}=time+$beginwait;
 		&save('pls',$ppls);
 		&save('map',$pset,$pmap);
 		&save('log',$plog);
