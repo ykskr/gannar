@@ -94,7 +94,7 @@ $plog=&load('log');
 
 if($form{'gnm'} ne ''){
 	if($form{'mode'} eq 'new'){
-		$$ppls{'id'}=&new($ppls,$plog,$pset,$pmap);
+		&new($ppls,$plog,$pset,$pmap);
 	}
 #	print &header();print &dump($p);exit;
 	&main($ppls,$plog,$pset,$pmap);
@@ -956,7 +956,6 @@ sub new{
 	push(@{$$ppls{'pls'}},&transpl(\%dt));
 	$$pmap[$dt{'posi'}]{'member'}[$dt{'belong'}]++;
 	unshift(@{$$plog{'action'}},&printtime(time).sprintf(' <span class=B%s><B>%s</B>‚ªuŠè•º‚Æ‚µ‚Ä<B>%s</B>‚É“ü‘‚µ‚Ü‚µ‚½B</span><br>',$c,$dt{'name'},$cname[$c]));
-	return $#{$ppls{'pls'}};
 }
 
 sub reset{
