@@ -395,7 +395,7 @@ sub ruin{
 				$$_{'wamax'}=$waitmax if $$_{'wamax'}>$waitmax;
 				$$_{'move'}=$$_{'mvmax'};
 			}elsif($$_{'belong'}==$$pl{'belong'}){
-				$$_{'status'}[1]++ if $$_{'belong'}==$$pl{'belong'};
+				$$_{'status'}[1]++;
 				$$_{'point'}+=$ruinptpoint;
 			}
 		}
