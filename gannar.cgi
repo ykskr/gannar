@@ -1107,12 +1107,12 @@ pass<input type=text name=pass><br>
 </form>
 -HTML-
 		print &footer();
-		exit;
+		return;
 	}
 	if($form{'pass'} ne $adminpass){
 		print 'error</form>';
 		print &footer();
-		exit;
+		return;
 	}
 	if($form{'cmd'} eq 'mapedit'){
 		my($set,$map,$log,$po,$pn,$posi);
