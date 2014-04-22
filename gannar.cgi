@@ -1036,12 +1036,12 @@ sub calcbattle{
 }
 
 sub getmap{
-	my($p,$land);
-	$land=$_[0];$trap=$_[1];
+	my($p,$land,$trap,$member);
+	$land=$_[0];$trap=$_[1];$member=$_[2]?$_[2]:[];
 	$$p={
 		'land',$land,
 		'trap',$trap,
-		'member',[],
+		'member',$member,
 		'name',$lname[$land],
 		'cost',$land==6?2:$land==8?3:$land==5?0:1,
 		'hp',$land==7?5:0,
