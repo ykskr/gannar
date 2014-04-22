@@ -1095,6 +1095,7 @@ sub printtime{
 #---------------------------------------------------------------
 
 sub admin{
+	my($count);
 	print &header();
 		print << "-HTML-";
 <form action="$cgi" method=POST>
@@ -1146,11 +1147,14 @@ pass<input type=text name=pass><br>
 			print 'マップの規定字数ではありません。'.length($form{'map'})."!=".int($width*$height)."\n";
 		}
 	}
+	$count=0;
+	open(F,$stockfile);while(<F>){$count++;}close(F);
 	print << "-HTML-";
 <input type=hidden name=cmd>
 <input type=hidden name=pass value="$form{'pass'}">
 <hr>
 <h3>マップ登録</h3>
+ストック $count個<br>
 <input type=text name=map size=99><br>
 <input type=submit value='送信' onclick='this.form.cmd.value="mapcreate"'>
 <hr>
