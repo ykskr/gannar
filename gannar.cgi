@@ -382,8 +382,6 @@ sub ruin{
 		}
 	}
 	$i=0;foreach(@{$$setting{'country'}}){$i++ if $_;}$i-- if $$setting{'country'}[0];
-	if($i>1){
-		unshift(@{$$log{'action'}},&printtime(time).' '.sprintf('<span class=B%s>%s</span>から多数の人材が亡命していきました。<br>',$enemy,$cname[$enemy])) if $enemy;
 		my(@tmp,@cnt,@exl);
 		foreach(@{$pls}){
 			$cnt[$$_{'belong'}]++;
@@ -399,6 +397,8 @@ sub ruin{
 				$$_{'point'}+=$ruinptpoint;
 			}
 		}
+	if($i>1){
+		unshift(@{$$log{'action'}},&printtime(time).' '.sprintf('<span class=B%s>%s</span>から多数の人材が亡命していきました。<br>',$enemy,$cname[$enemy])) if $enemy;
 		for($i=0;$i<@tmp;$i++){$j=int rand(@tmp-$i)+$i;@tmp[$i,$j]=@tmp[$j,$i] if $i!=$j;}
 		foreach(@tmp){
 			foreach($i=0,$j=1;$j<@cname;$j++){$i=$j if $cnt[$j] && $j!=$enemy && (!$i || $cnt[$i]>$cnt[$j]);}
