@@ -119,7 +119,7 @@ sub action_top{
 		&save_map(undef,$pset,$pmap);
 		&save_log(undef,$plog);
 	}
-        my $ret = "";
+	my $ret = "";
 	$ret .= &header({'cid',2,'plnow',$$ppls{'now'},'pltotal',@{$$ppls{'pls'}}+0,});
 	$ret .= &printfield($pset);
 	$ret .= &printmap({'map',$pmap});
@@ -149,7 +149,7 @@ sub action_top{
 	$ret .= &printlog($plog,{'logcond',{'all',3,'country',10,'action',30,'history',3}});
 	$ret .= &footer();
 
-        print $ret;
+	print $ret;
 }
 
 # ÉÅÉCÉìâÊñ 
@@ -782,39 +782,39 @@ sub printlink{
 
 # äeéÌì«Ç›çûÇ›
 sub load_pls{
-    my($i,$plid,$now,$name,@pls,@dat);
-    open(my $f,$playfile);
-    $i=0;$plid=0;$now=0;
-    $name=$_[1];
-    while(<$f>){
-        chomp;
-        @dat=split(/<>/);
-        my %dt=();
-        $dt{'name'}=$dat[0];
-        $dt{'pass'}=$dat[1];
-        $dt{'belong'}=$dat[2];
-        $dt{'origin'}=$dat[3];
-        $dt{'item'}=[split(//,$dat[4])];
-        $dt{'posi'}=$dat[5];
-        $dt{'wait'}=$dat[6];
-        $dt{'wamax'}=$dat[7];
-        $dt{'move'}=$dat[8];
-        $dt{'mvmax'}=$dat[9];
-        $dt{'point'}=$dat[10];
-        $dt{'lastlogin'}=$dat[11];
-        $dt{'honor'}=$dat[12];
-        $dt{'status'}=[split(/!/,$dat[13])];
-        $dt{'itemflags'}=[split(/!/,$dat[14])];
-        $dt{'actflag'}=$dat[15];
-        $dt{'config'}=$dat[16];
-        $dt{'board'}=$dat[17];
-        push(@pls,&transpl(\%dt));
-        if($name ne '' && $name eq $dt{'name'}){$plid=$i;}
-        $now++ if $dt{'lastlogin'}+$logintime>time;
-        $i++;
-    }
-    close($f);
-    return {'id',$plid,'now',$now,'pls',\@pls,};
+	my($i,$plid,$now,$name,@pls,@dat);
+	open(my $f,$playfile);
+	$i=0;$plid=0;$now=0;
+	$name=$_[1];
+	while(<$f>){
+		chomp;
+		@dat=split(/<>/);
+		my %dt=();
+		$dt{'name'}=$dat[0];
+		$dt{'pass'}=$dat[1];
+		$dt{'belong'}=$dat[2];
+		$dt{'origin'}=$dat[3];
+		$dt{'item'}=[split(//,$dat[4])];
+		$dt{'posi'}=$dat[5];
+		$dt{'wait'}=$dat[6];
+		$dt{'wamax'}=$dat[7];
+		$dt{'move'}=$dat[8];
+		$dt{'mvmax'}=$dat[9];
+		$dt{'point'}=$dat[10];
+		$dt{'lastlogin'}=$dat[11];
+		$dt{'honor'}=$dat[12];
+		$dt{'status'}=[split(/!/,$dat[13])];
+		$dt{'itemflags'}=[split(/!/,$dat[14])];
+		$dt{'actflag'}=$dat[15];
+		$dt{'config'}=$dat[16];
+		$dt{'board'}=$dat[17];
+		push(@pls,&transpl(\%dt));
+		if($name ne '' && $name eq $dt{'name'}){$plid=$i;}
+		$now++ if $dt{'lastlogin'}+$logintime>time;
+		$i++;
+	}
+	close($f);
+	return {'id',$plid,'now',$now,'pls',\@pls,};
 }
 sub load_map{
 	my($p,$ppl,$map,$trap,$i,$j,$pmap,@set,@balance);
@@ -885,44 +885,44 @@ sub save_pls {
 }
 
 sub save_map {
-    my($map,$trap,$i,$j,$pmap,@set,@balance);
-    for($i=0;$i<@{$_[2]};$i++){
-        $map.=$_[2][$i]{'land'};
-        $trap.=$_[2][$i]{'trap'};
-    }
-    open(my $f,">$mapsfile");
-    print $f join('!',$_[1]{'period'},$_[1]{'resettime'},$_[1]{'begintime'},$_[1]{'end'},"\n");
-    print $f $map."\n";
-    print $f $trap."\n";
-    close($f);
+	my($map,$trap,$i,$j,$pmap,@set,@balance);
+	for($i=0;$i<@{$_[2]};$i++){
+		$map.=$_[2][$i]{'land'};
+		$trap.=$_[2][$i]{'trap'};
+	}
+	open(my $f,">$mapsfile");
+	print $f join('!',$_[1]{'period'},$_[1]{'resettime'},$_[1]{'begintime'},$_[1]{'end'},"\n");
+	print $f $map."\n";
+	print $f $trap."\n";
+	close($f);
 }
 
 sub save_log{
-    my($text,$file,@tmp);
-    $text=$_[1];
-    open(my $f,">$mesafile");
-    for($i=0;$i<@{$$text{'all'}} && $maxalllog;$i++){
-        print $f $$text{'all'}[$i]."\n";
-    }
-    close($f);
-    open(my $f,">$mescfile");
-    for($i=0;$i<@cname;$i++){
-        print $f $$text{'housin'}[$i]."\n";
-    }
-    for($i=0;$i<@{$$text{'country'}} && $i<$maxcountrylog;$i++){
-        print $f $$text{'country'}[$i]."\n";
-    }
-    close($f);
-    open(my $f,">$actsfile");
-    for($i=0;$i<@{$$text{'action'}} && $i<$maxactionlog;$i++){
-        print $f $$text{'action'}[$i]."\n";
-    }
-    close($f);
-    open(my $f,">$histfile");
-    for($i=0;$i<@{$$text{'history'}} && $i<$maxhistorylog;$i++){
-        print $f $$text{'history'}[$i]."\n";
-    }
-    close($f);
+	my($text,$file,@tmp);
+	$text=$_[1];
+	open(my $f,">$mesafile");
+	for($i=0;$i<@{$$text{'all'}} && $maxalllog;$i++){
+		print $f $$text{'all'}[$i]."\n";
+	}
+	close($f);
+	open(my $f,">$mescfile");
+	for($i=0;$i<@cname;$i++){
+		print $f $$text{'housin'}[$i]."\n";
+	}
+	for($i=0;$i<@{$$text{'country'}} && $i<$maxcountrylog;$i++){
+		print $f $$text{'country'}[$i]."\n";
+	}
+	close($f);
+	open(my $f,">$actsfile");
+	for($i=0;$i<@{$$text{'action'}} && $i<$maxactionlog;$i++){
+		print $f $$text{'action'}[$i]."\n";
+	}
+	close($f);
+	open(my $f,">$histfile");
+	for($i=0;$i<@{$$text{'history'}} && $i<$maxhistorylog;$i++){
+		print $f $$text{'history'}[$i]."\n";
+	}
+	close($f);
 }
 
 # êVãKìoò^
