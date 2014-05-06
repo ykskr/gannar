@@ -1147,6 +1147,7 @@ pass<input type=text name=pass><br>
 		print "リセット完了。\n";
 	}
 	if($form{'cmd'} eq 'mapcreate'){
+		$form{'map'}=~s/<br>//g;
 		if(length($form{'map'})==$width*$height){
 			open(F,">>$stockfile");print F $form{'map'}."\n";close(F);
 			print "マップ登録完了。\n";
@@ -1162,7 +1163,7 @@ pass<input type=text name=pass><br>
 <hr>
 <h3>マップ登録</h3>
 ストック $count個<br>
-<input type=text name=map size=99><br>
+<textarea name=map rows=4 cols=45></textarea><br>
 <input type=submit value='送信' onclick='this.form.cmd.value="mapcreate"'>
 <hr>
 <h3>地形変更</h3>
