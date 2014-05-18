@@ -56,11 +56,12 @@ $lock='lock.lok';#lock folder
 	{'name','‹­‰»‘„','order',0,'gettype',0,'max',9,'val',1,'fid',1,'time',3600,'ename','UŒ‚—ÍUp',},
 	{'name','«ŒRŠø','order',1,'gettype',0,'max',9,'val',0.3,'fid',2,'time',3600,'ename','‰e‹¿—ÍUp',},
 	{'name','‰h—{Ü','order',2,'gettype',0,'max',9,'val',10,'fid',3,'time',3600,'ename','‰h—{ÜNG',},
-	{'name','|“Sò','order',4,'gettype',0,'max',9,'need',2,},
-	{'name','Œ@í‹@','order',5,'gettype',0,'max',9,'need',4,},
-	{'name','“y»‘Ü','order',6,'gettype',0,'max',9,'need',7,},
-	{'name','”mÔî','order',3,'gettype',0,'max',9,},
-	{'name','‘oŠá‹¾','order',7,'gettype',0,'max',9,'val',1,},
+	{'name','|“Sò','order',5,'gettype',0,'max',9,'need',2,},
+	{'name','Œ@í‹@','order',6,'gettype',0,'max',9,'need',4,},
+	{'name','“y»‘Ü','order',7,'gettype',0,'max',9,'need',7,},
+	{'name','”mÔî','order',4,'gettype',0,'max',9,},
+	{'name','‘oŠá‹¾','order',8,'gettype',0,'max',9,'val',1,},
+	{'name','‹AŠÒ‘','order',3,'gettype',0,'max',9,},
 );
 
 #---------------------------------------------------------------
@@ -533,6 +534,15 @@ sub item{
 			}
 		}
 		$return.='<br>';
+	}elsif($item==8){
+		my $posi=&defaultpt($$pl{'belong'});
+		$txt=&printpt($$map[$posi]{'land'},$posi).'‚Ö‚Æƒ[ƒv‚µ‚Ü‚µ‚½B';
+		
+		$$map[$$pl{'posi'}]{'member'}[$$pl{'belong'}]--;
+		$$pl{'posi'}=$posi;
+		$$map[$$pl{'posi'}]{'member'}[$$pl{'belong'}]++;
+		$$log{'action'}[0].=$txt;
+		$return.=$txt.'<br>';
 	}
 	$$log{'action'}[0].='<br>';
 	return $return;
