@@ -601,10 +601,10 @@ sub comment{
 		$return.=$txt eq ''?'伝言を消去するように':"「$txt」<br>と";
 		$return.="本拠地へと伝えた。<br>";
 	}elsif($type==3){
-		$return.="「$txt」<br>と全体に向かって叫んだ。<br>";
+		$return.="「$txt」<br>と大陸中に届く大声で叫んだ。<br>";
 		unshift(@{$$log{'all'}},&printtime(time)." <span class=B$$pl{'belong'}>$$pl{'name'}</span>:".$txt."<br>");
 	}elsif($type==1){
-		$return.="国の方針を「$txt」に変更した。";
+		$return.="「$txt」<br>と国内用無線機に国の方針として囁いた。";
 		$$log{'housin'}[$$pl{'belong'}]=&printtime(time)." <span class=B$$pl{'belong'}>$$pl{'name'}</span>：".$txt;
 	}elsif($type==$$pl{'belong'}+10){
 		$type-=10;
@@ -612,7 +612,8 @@ sub comment{
 		unshift(@{$$log{'country'}},&printtime(time)." <span class=B$$pl{'belong'}>$$pl{'name'}</span>：".$txt."<br>&$type&$type&");
 	}elsif($type<@cname+10){
 		$type-=10;
-		$return.="「$txt」<br>と$cname[$type]国に伝えた。<br>";
+		$return.="「$txt」<br>と国外用無線機と国内用無線機に囁いた。<br>";
+		$return.='管理者宛て発言のため国内発言ログには表示しません、ということはありません。' if !$type;
 		unshift(@{$$log{'country'}},&printtime(time)." ".&printpl($pl)."→<span class=B$type>$cname[$type]</span>：".$txt."<br>&$$pl{'belong'}&$type&");
 	}
 	return $return;
