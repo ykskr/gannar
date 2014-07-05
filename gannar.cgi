@@ -332,21 +332,27 @@ sub fence{
 
 # 占領
 sub battle{
-	my($dir,$dirtxt,$pl,$pls,$map,$log,$posi,$return,$atkable,$txt,$enemy,$ruinflag,$mynm,$mytxt,$vsnm,$vstxt);
+	my($dir,$dirtxt,$pl,$pls,$map,$log,$posi,$return,$atkable,$trapflag,$traptxt,$txt,$enemy,$ruinflag,$mynm,$mytxt,$vsnm,$vstxt);
 	($dirtxt,$pls,$pl,$map,$log,$setting,$posi)=@_;
 	($atkable,$mynm,$mytxt,$vsnm,$vstxt)=&calcbattle(3,$posi,$pl,$map,$pls);
 	return if !$atkable;
 	$return.=&printpt($$map[$posi]{'land'},$posi).'に占領行為を実施します。<br>';
+	($trapflag,$traptxt)=&trap($pl,$map,$posi);
 	$enemy=$$map[$posi]{'belong'};
-	$txt=&printpl($pl).' が '.&printpt($$map[$posi]{'land'},$posi);
+	$txt.=&printpl($pl).'が';
 	if($vsnm){
-		$txt.=sprintf('にて<span class=B%s>%s</span>VS<span class=B%s>%s</span>の争いで',$$pl{'belong'},$mytxt,$enemy,$vstxt);
+		$txt.=&printpt($$map[$posi]{'land'},$posi).'にて';
+		$txt.=$traptxt.($trapflag%2==$mynm>$vsnm?'ましたが、':'、') if $trapflag;
+		$txt.=sprintf('<span class=B%s>%s</span>VS<span class=B%s>%s</span>の争いで',$$pl{'belong'},$mytxt,$enemy,$vstxt);
 	}else{
-		$txt.='を';
+		$txt.=$traptxt.($trapflag%2?'ましたが、':'、') if $trapflag;
+		$txt.=&printpt($$map[$posi]{'land'},$posi).'を';
 	}
 	if($mynm>$vsnm){
 		$txt.='勝利して' if $vsnm;
-		$txt.='占領しました。<br>';
+		$txt.='占領';
+		$txt.='＆罠を破壊' if $trapflag;
+		$txt.='しました。<br>';
 		$return.=$txt;
 		if($$pl{'wamax'}>$waitmin){
 			$$pl{'wamax'}--;
@@ -362,6 +368,7 @@ sub battle{
 		elsif($enemy && $posi==&defaultpt($enemy)){$ruinflag=2;}
 		$$map[$posi]{'land'}=$$pl{'belong'};
 		$$map[$posi]{'belong'}=$$pl{'belong'};
+		$$map[$posi]{'trap'}=0;
 	}else{
 		$txt.='敗北しました。<br>';
 		$return.=$txt;
@@ -371,6 +378,27 @@ sub battle{
 		$return.=&ruin($dirtxt,$pls,$pl,$map,$log,$setting,$enemy,$ruinflag);
 	}
 	return $return;
+}
+
+# 罠
+sub trap{
+	my($pl,$pls,$map,$log,$posi,$return,$trap,$trapflag);
+	($pl,$map,$posi)=@_;
+	$id=$$map[$posi]{'trap'};
+	return if !$id;
+	$trapflag=1;
+	$trap=$items[$trapitem[$id]];
+	$return='<span class=trap>'.$$trap{'name'}.'</span>を';
+	$$map[$posi]{'text'}.="<b>$trap{'short'}</b>";
+	if($id==1){
+		if($$pl{'move'}<=0){$trapflag=2;}
+		else{
+			$$trap{'val'}=$$pl{'move'} if $$pl{'move'}<$$trap{'val'};
+			$$pl{'move'}-=$$trap{'val'};
+		}
+	}
+	$return.=$trapflag==1?'踏み':'回避し';
+	return ($trapflag,$return);
 }
 
 # 滅亡
@@ -1232,6 +1260,7 @@ table{width:100%;}
 .shuffle{border:1px solid black;border-collapse:collapse;}
 .shuffle td{border:1px solid black;}
 .direct{width:auto;}
+.trap{color:red;}
 $param{'css'}
 </style>
 $param{'head'}
