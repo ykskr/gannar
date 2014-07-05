@@ -1088,6 +1088,7 @@ sub calcbattle{
 	$vstxt=$vsnm.'l';
 	for(0..3){
 		my $tposi=&movept($_,$posi);
+		next if $tposi==$posi;
 		if($$map[$tposi]{'belong'}==$$pl{'belong'}){$atkable=1;}
 		if($$pl{'itemflags'}[2]>0 && $flag&2){$add[1]+=$$map[$tposi]{'member'}[$$pl{'belong'}]*$items[1]{'val'};}
 	}
