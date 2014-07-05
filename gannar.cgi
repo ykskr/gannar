@@ -648,6 +648,7 @@ sub printmap{
 		$return.="<td class=B$map[$i]{'land'}";
 		$return.=">$map[$i]{'arrow'}";
 		$return.=$i==$param{'pl'}{'posi'}?"<b>[$map[$i]{'member'}[$param{'pl'}{'belong'}]]</b>":$map[$i]{'member'}[$param{'pl'}{'belong'}] if $map[$i]{'member'}[$param{'pl'}{'belong'}];
+		$return.=$items[$trapitem[$map[$i]{'trap'}]]{'short'} if $map[$i]{'trap'} && $map[$i]{'belong'}==$param{'pl'}{'belong'};
 		$return.=$map[$i]{'text'}."</td>";
 		$return.=sprintf("<td class=outer>%d</td></tr>\n",int($i/$width)) if $i%$width+1==$width;
 	}
