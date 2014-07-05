@@ -1101,7 +1101,7 @@ sub getmap{
 	$land=$_[0];$trap=$_[1];$member=$_[2]?$_[2]:[];
 	$$p={
 		'land',$land,
-		'trap',$trap,
+		'trap',$trap>0?$trap:0,
 		'member',$member,
 		'name',$lname[$land],
 		'cost',$land==6?2:$land==8?3:$land==5?0:1,
