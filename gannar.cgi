@@ -484,6 +484,7 @@ sub reign{
 sub item{
 	my($dir,$dirtxt,$pl,$pls,$map,$log,$posi,$return,$atkable,$txt,$enemy,$ruinflag,$i,$time,@tmp,@cnt);
 	($pls,$pl,$map,$log,$setting,$item)=@_;
+	return if $item==777;
 	if($$pl{'item'}[$item]<=0){
 		return $items[$item]{'name'}.'を使用しようとしましたが、個数が足りないため失敗しました。<br>';
 	}
