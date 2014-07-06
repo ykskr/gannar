@@ -60,7 +60,7 @@ $lock='lock.lok';#lock folder
 	{'name','Œ@í‹@','order',7,'gettype',0,'max',9,'need',4,},
 	{'name','“y»‘Ü','order',8,'gettype',0,'max',9,'need',7,},
 	{'name','”mÔî','order',5,'gettype',0,'max',9,},
-	{'name','‘oŠá‹¾','order',9,'gettype',0,'max',9,'val',1,},
+	{'name','‘oŠá‹¾','order',9,'gettype',0,'max',9,'val',1,'val2',3,},
 	{'name','‹AŠÒ‘','order',4,'gettype',0,'max',9,},
 	{'name','’n—‹ã©','order',0,'gettype',0,'max',9,'short','¢','val',5,'tid',1,},
 );
@@ -551,17 +551,23 @@ sub item{
 		$return.='ü•Ó‚Ì“G‚Ìl”‚Æã©‚ğŠm”F‚µ‚Ü‚·B<br>';
 		for($i=0-$items[7]{'val'};$i<=$items[7]{'val'};$i++){
 			next if $i*$width+$$pl{'posi'}<0 || $i*$width+$$pl{'posi'}>$height*$width;
-			for($j=0-$items[7]{'val'};$j<=$items[7]{'val'};$j++){
+			my $val=$items[7]{'val'}>$items[7]{'val2'}?$items[7]{'val'}:$items[7]{'val2'};
+			for($j=0-$val;$j<=$val;$j++){
 				my($posi,$k,$txt);
 				next if $$pl{'posi'}%$width+$j<0 || $$pl{'posi'}%$width+$j>$width;
 				my $posi=$$pl{'posi'}+$i*$width+$j;
 				my $k=0;
 				foreach(@{$$map[$posi]{'member'}}){
+					next if abs($i)>$items[7]{'val'} || abs($j)>$items[7]{'val'};
 					if($k!=$$pl{'belong'} && $_){
 						$txt.=&printcn($k,$_.'l');
 						$$map[$posi]{'text'}.=&printcn($k,'<b style="color:red">'.$_.'</b>');
 					}
 					$k++;
+				}
+				if(abs($i)<$items[7]{'val2'} && abs($j)<$items[7]{'val2'} && $$map[$posi]{'ownable'} && $$map[$posi]{'trap'}){
+					$txt.=&printcn($$map[$posi]{'belong'},$items[$trapitem[$$map[$posi]{'trap'}]]{'name'});
+					$$map[$posi]{'text'}.='<b class=trap>'.$items[$trapitem[$$map[$posi]{'trap'}]]{'short'}.'</b>';
 				}
 				$return.=&printpt($$map[$posi]{'belong'},$posi).$txt.'A' if $txt;
 			}
