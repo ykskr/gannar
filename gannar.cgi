@@ -540,7 +540,7 @@ sub item{
 		$$log{'action'}[0].=$txt;
 		$return.=$txt.'<br>';
 	}elsif($item==6){
-		for($i=0;$i<$width*$height;$i++){push(@tmp,$i) if $$map[$i]{'belong'}!=$$pl{'belong'} && $$map[$i]{'movable'} && $$map[$i]{'cost'};}
+		for($i=0;$i<$width*$height;$i++){push(@tmp,$i) if $$map[$i]{'belong'}!=$$pl{'belong'} && $$map[$i]{'ownable'};}
 		$$map[$$pl{'posi'}]{'member'}[$$pl{'belong'}]--;
 		$$pl{'posi'}=$tmp[rand(@tmp)];
 		$$map[$$pl{'posi'}]{'member'}[$$pl{'belong'}]++;
