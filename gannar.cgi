@@ -963,7 +963,7 @@ sub save_log{
 	my($text,$file,@tmp);
 	$text=$_[1];
 	open(my $f,">$mesafile");
-	for($i=0;$i<@{$$text{'all'}} && $maxalllog;$i++){
+	for($i=0;$i<@{$$text{'all'}} && $i<$maxalllog;$i++){
 		print $f $$text{'all'}[$i]."\n";
 	}
 	close($f);
