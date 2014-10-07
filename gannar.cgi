@@ -528,6 +528,8 @@ sub item{
 	}elsif($item==5){
 		if($$map[$$pl{'posi'}]{'land'}!=8){
 			$txt='現在地が'.&printmp(8,$lname[8]).'ではないため失敗しました。';
+		}elsif(!(&calcbattle(0,$$pl{'posi'},$pl,$map,$pls))[0]){
+			$txt=&printcn($$pl{'belong'},'自陣').'が近くにないため失敗しました。';
 		}else{
 			$txt=$$map[$$pl{'posi'}]{'member'}[$$pl{'belong'}].'人で';
 			if($$map[$$pl{'posi'}]{'member'}[$$pl{'belong'}]<$items[$item]{'need'}){
