@@ -527,7 +527,12 @@ sub item{
 		$return.=$txt.'<br>';
 	}elsif($item==5){
 		if($$map[$$pl{'posi'}]{'land'}!=8){
-			$txt='現在地が'.&printmp(8,$lname[8]).'ではないため失敗しました。';
+			if($$map[$$pl{'posi'}]{'trap'}){
+				$$map[$$pl{'posi'}]{'trap'}=0;
+				$txt=&printpt($$map[$$pl{'posi'}]{'land'},$$pl{'posi'}).'の罠を解除しました。';
+			}else{
+				$txt='河地形以外かつ罠が存在していないため失敗しました。';
+			}
 		}elsif(!(&calcbattle(0,$$pl{'posi'},$pl,$map,$pls))[0]){
 			$txt=&printcn($$pl{'belong'},'自陣').'が近くにないため失敗しました。';
 		}else{
