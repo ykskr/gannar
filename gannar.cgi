@@ -334,7 +334,7 @@ sub fence{
 sub battle{
 	my($dir,$dirtxt,$pl,$pls,$map,$log,$posi,$return,$atkable,$trapflag,$traptxt,$txt,$enemy,$ruinflag,$mynm,$mytxt,$vsnm,$vstxt);
 	($dirtxt,$pls,$pl,$map,$log,$setting,$posi)=@_;
-	($atkable,$mynm,$mytxt,$vsnm,$vstxt)=&calcbattle(3,$posi,$pl,$map,$pls);
+	($atkable,$mynm,$mytxt,$vsnm,$vstxt)=&calcbattle(7,$posi,$pl,$map,$pls);
 	return if !$atkable;
 	$return.=&printpt($$map[$posi]{'land'},$posi).'‚Éè—Ìsˆ×‚ğÀ{‚µ‚Ü‚·B<br>';
 	($trapflag,$traptxt)=&trap($pl,$map,$posi);
@@ -1095,7 +1095,7 @@ sub defaultpt{
 
 # UŒ‚—Í –hŒä—Í
 sub calcbattle{
-	my($pl,$map,$pls,$flag,$atkable,$mynm,$vsnm,$mytxt,$vstxt,@add);
+	my($pl,$map,$pls,$flag,$atkable,$mynm,$vsnm,$mytxt,$vstxt,@add,@sub);
 	($flag,$posi,$pl,$map,$pls)=@_;
 	$mynm=$$map[$posi]{'member'}[$$pl{'belong'}];
 	$vsnm=$$map[$posi]{'member'}[$$map[$posi]{'belong'}];
@@ -1106,9 +1106,11 @@ sub calcbattle{
 		next if $tposi==$posi;
 		if($$map[$tposi]{'belong'}==$$pl{'belong'}){$atkable=1;}
 		if($$pl{'itemflags'}[2]>0 && $flag&2){$add[1]+=$$map[$tposi]{'member'}[$$pl{'belong'}]*$items[1]{'val'};}
+		if($$map[$tposi]{'land'}==6 && $vsnm && $flag&4){$sub[0]++;}
 	}
 	if($$pl{'itemflags'}[1]>0 && $flag&1){$add[0]+=$items[0]{'val'};}
 	foreach(@add){if($_ ne ''){$mynm+=$_;$mytxt.="+$_";}}
+	foreach(@sub){if($_ ne ''){$vsnm+=$_;$vstxt.="+$_";}}
 	return($atkable,$mynm,$mytxt,$vsnm,$vstxt);
 }
 
