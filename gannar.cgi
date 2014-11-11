@@ -55,14 +55,15 @@ $lock='lock.lok';#lock folder
 @items=(
 	{'name','‹­‰»‘„','order',1,'gettype',0,'max',9,'val',1,'fid',1,'time',3600,'ename','UŒ‚—ÍUp',},
 	{'name','«ŒRŠø','order',2,'gettype',0,'max',9,'val',0.3,'fid',2,'time',3600,'ename','‰e‹¿—ÍUp',},
-	{'name','‰h—{Ü','order',3,'gettype',0,'max',9,'val',10,'fid',3,'time',3600,'ename','‰h—{ÜNG',},
-	{'name','|“Sò','order',6,'gettype',0,'max',9,'need',2,},
-	{'name','Œ@í‹@','order',7,'gettype',0,'max',9,'need',4,},
-	{'name','“y»‘Ü','order',8,'gettype',0,'max',9,'need',7,},
-	{'name','”mÔî','order',5,'gettype',0,'max',9,},
-	{'name','‘oŠá‹¾','order',9,'gettype',0,'max',9,'val',1,'val2',3,},
-	{'name','‹AŠÒ‘','order',4,'gettype',0,'max',9,},
+	{'name','‰h—{Ü','order',4,'gettype',0,'max',9,'val',10,'fid',3,'time',3600,'ename','‰h—{ÜNG',},
+	{'name','|“Sò','order',7,'gettype',0,'max',9,'need',2,},
+	{'name','Œ@í‹@','order',8,'gettype',0,'max',9,'need',4,},
+	{'name','“y»‘Ü','order',9,'gettype',0,'max',9,'need',7,},
+	{'name','”mÔî','order',6,'gettype',0,'max',9,},
+	{'name','‘oŠá‹¾','order',10,'gettype',0,'max',9,'val',1,'val2',3,},
+	{'name','‹AŠÒ‘','order',5,'gettype',0,'max',9,},
 	{'name','’n—‹ã©','order',0,'gettype',0,'max',9,'short','¢','val',5,'tid',1,},
+	{'name','ë—Â‹|','order',3,'gettype',0,'max',5,'fid',4,'time',1800,'ename','ŠÑ’Ê—ÍUp'},
 );
 
 #---------------------------------------------------------------
@@ -492,11 +493,8 @@ sub item{
 	unshift(@{$$log{'action'}},&printtime(time).' '.&printpl($pl).'‚ª'.&printpt($$map[$$pl{'posi'}]{'land'},$$pl{'posi'}).'‚É‚Ä'.$txt);
 	$return.=$txt.'<br>';
 	$$pl{'item'}[$item]--;
-	if($item==0){
-		$return.='UŒ‚—Í‚ğ'.$items[$item]{'time'}.'•b‚ÌŠÔ‘‰Á‚³‚¹‚Ü‚·B<br>';
-		$$pl{'itemflags'}[$items[$item]{'fid'}]+=$items[$item]{'time'};
-	}elsif($item==1){
-		$return.='‰e‹¿—Í‚ğ'.$items[$item]{'time'}.'•b‚ÌŠÔ‘‰Á‚³‚¹‚Ü‚·B<br>';
+	if($item==0 || $item==1 || $item==10){
+		$return.=substr($items[$item]{'ename'},0,-2).'‚ğ'.$items[$item]{'time'}.'•b‚ÌŠÔ‘‰Á‚³‚¹‚Ü‚·B<br>';
 		$$pl{'itemflags'}[$items[$item]{'fid'}]+=$items[$item]{'time'};
 	}elsif($item==2){
 		if($$pl{'itemflags'}[$items[$item]{'fid'}]>0){
@@ -1109,6 +1107,7 @@ sub calcbattle{
 		if($$map[$tposi]{'land'}==6 && $vsnm && $flag&4){$sub[0]++;}
 	}
 	if($$pl{'itemflags'}[1]>0 && $flag&1){$add[0]+=$items[0]{'val'};}
+	if($sub[0] && $$pl{'itemflags'}[4]>0){$sub[0]=0;}
 	foreach(@add){if($_ ne ''){$mynm+=$_;$mytxt.="+$_";}}
 	foreach(@sub){if($_ ne ''){$vsnm+=$_;$vstxt.="+$_";}}
 	return($atkable,$mynm,$mytxt,$vsnm,$vstxt);
