@@ -218,6 +218,8 @@ sub action_main{
 		elsif($form{'val'}==9){$message.=&config($pl);}
 	}elsif($form{'mode'} eq 'shout'){
 		$message.=&comment($pl,$plog,$form{'mes'},$form{'val'});
+	}elsif($$pset{'resettime'}>time){
+		$message.='統一されたため、初期化後に移動開始時間になるまではアイテム使用と移動が出来ません。<br>';
 	}elsif($$pset{'begintime'}>time){
 		$message.='まだ始まっていません。<br>開始までお待ちください。<br>';
 	}elsif($form{'dir'}){
