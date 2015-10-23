@@ -544,7 +544,7 @@ sub item{
 				$txt.='埋め立てを実行しましたが、人数が足りなかったため失敗しました。';
 			}else{
 				$txt.=&printmp($$map[$$pl{'posi'}]{'land'},$$map[$$pl{'posi'}]{'name'}).'の埋め立てに成功しました。';
-				$$map[$$pl{'posi'}]=&getmap($$pl{'belong'},'',$$map[$$pl{'posi'}]{'member'});
+				$$map[$$pl{'posi'}]=&getmap($$pl{'belong'},$$map[$$pl{'posi'}]{'trap'},$$map[$$pl{'posi'}]{'member'});
 				$$setting{'country'}[$$pl{'belong'}]++;
 			}
 		}
