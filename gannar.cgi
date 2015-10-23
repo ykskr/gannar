@@ -34,6 +34,7 @@ $maxhistorylog=999999;# 歴史ログ
 $title='ガンナー(コピー)';# タイトル
 $bgcolor='#EEFFEE';# 背景色
 $textcolor='black';# 文字色
+$cssfile='design.css';
 
 $bbsurl='http://www7.atpages.jp/ssdi/gb/gb.cgi';
 $chaturl='http://www7.atpages.jp/ssdi/chat/chat.cgi';
@@ -1266,7 +1267,7 @@ sub header{
 <META NAME='description' CONTENT='非同期式多人数同時参加対戦型オンライン陣取りゲーム。他国同盟や全50種類のアイテムによる戦略的戦術的駆け引きを駆使し、全土統一せよ。'>
 <META NAME='keywords' CONTENT='SSDI,CGI,オンライン,携帯,ブラウザ,無料,シミュレーション'>
 <META NAME='Author' CONTENT='Darselle'>
-<LINK REL='STYLESHEET' TYPE='text/css' HREF='http://cgi28.plala.or.jp/ssdi/gannar/designw.css' TITLE='デザイン'>
+<LINK REL='STYLESHEET' TYPE='text/css' HREF='$cssfile' TITLE='デザイン'>
 <TITLE>$title</TITLE>
 <style>
 body{background:$bgcolor;color:$textcolor;}

@@ -1,0 +1,23 @@
+BODY {
+	background : #EEFFEE ;
+}
+
+A:hover { color : #008000 ;}
+
+#map td{height:1em;width:1em;}
+
+.B0{background:#D0D0D0}
+.B1{background:#FFA0A0}
+.B2{background:#A0FFA0}
+.B3{background:#A0A0FF}
+.B4{background:#FFFFA0}
+.B5{background:#000000}
+.B6{background:#00B000}
+.B7{background:#FF20FF}
+.B8{background:#4040C0}
+.B9{background:#804000}
+.BA{background:#FF6060}
+.BB{background:#40C040}
+.BC{background:#60FFFF}
+.BD{background:#FFAA00}
+.BE{background:#800080}
