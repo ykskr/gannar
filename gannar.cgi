@@ -530,7 +530,7 @@ sub item{
 		$return.=$txt.'<br>';
 	}elsif($item==5){
 		if($$map[$$pl{'posi'}]{'land'}!=8){
-			if($$map[$$pl{'posi'}]{'trap'}){
+			if($$pl{'belong'}!=$$map[$$pl{'posi'}]{'belong'} && $$map[$$pl{'posi'}]{'trap'}){
 				$$map[$$pl{'posi'}]{'trap'}=0;
 				$txt=&printpt($$map[$$pl{'posi'}]{'land'},$$pl{'posi'}).'‚Ìã©‚ğ‰ğœ‚µ‚Ü‚µ‚½B';
 			}else{
