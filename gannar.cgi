@@ -327,6 +327,7 @@ sub fence{
 		$txt.='ÇîjâÛÇµÇ‹ÇµÇΩÅB<br>';
 		$$map[$posi]{'land'}=$$pl{'belong'};
 		$$map[$posi]{'belong'}=$$pl{'belong'};
+		$$setting{'country'}[$$pl{'belong'}]++;
 	}
 	$return.=$txt;
 	unshift(@{$$log{'action'}},&printtime(time).' '.$txt);
@@ -520,6 +521,7 @@ sub item{
 			}else{
 				$$map[$$pl{'posi'}]{'land'}=$item==3?7:8;
 				$$map[$$pl{'posi'}]{'belong'}=0;
+				$$setting{'country'}[$$pl{'belong'}]--;
 				$txt.=&printmp($$map[$$pl{'posi'}]{'land'},$lname[$$map[$$pl{'posi'}]{'land'}]).'ÇçÏê¨ÇµÇ‹ÇµÇΩÅB';
 			}
 		}
@@ -542,6 +544,7 @@ sub item{
 			}else{
 				$txt.=&printmp($$map[$$pl{'posi'}]{'land'},$$map[$$pl{'posi'}]{'name'}).'ÇÃñÑÇﬂóßÇƒÇ…ê¨å˜ÇµÇ‹ÇµÇΩÅB';
 				$$map[$$pl{'posi'}]=&getmap($$pl{'belong'},'',$$map[$$pl{'posi'}]{'member'});
+				$$setting{'country'}[$$pl{'belong'}]++;
 			}
 		}
 		$$log{'action'}[0].=$txt;
